@@ -21,14 +21,14 @@
             background-color: var(--bg); color: var(--text);
             margin: 0; 
             overflow-x: hidden; 
-            overflow-y: auto; /* Allows scrolling if the screen is small */
+            overflow-y: auto; 
             min-height: 100vh;
             display: flex; 
-            flex-direction: column; /* This stacks game + link vertically */
+            flex-direction: column; 
             align-items: center;
-            justify-content: flex-start; /* Start from top so it scrolls naturally */
+            justify-content: flex-start; 
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
-            padding-top: 40px; /* Gives the game a little room at the top */
+            padding-top: 40px; 
         }
 
         body::before {
@@ -61,23 +61,21 @@
             text-size-adjust: none;
         }
         
-        @media (max-width: 600px) {
-            .mascot-box { font-size: 1.2vw; }
-            .main-title { font-size: 1.4rem !important; }
-            .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
-        }
-
         @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
         
-        .title-group { text-align: center; margin-bottom: 40px; }
+        .title-group { text-align: center; margin-bottom: 40px; width: 100%; }
+        
+        /* Fixed Title Scaling so it doesn't wrap awkwardly */
         .main-title { 
-            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
+            font-size: clamp(1.5rem, 5vw, 3rem); 
+            color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
             margin: 0; animation: neonPulse 1.5s infinite alternate;
+            line-height: 1.2;
         }
-        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
+        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 4px 4px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 4px 4px 0px #000; } }
         .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
         .press-start {
-            font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
+            font-family: 'Press Start 2P'; font-size: 1.5rem; padding: 20px 40px;
             background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
             box-shadow: 0 12px 0 #064d3b;
         }
@@ -108,7 +106,7 @@
         .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
         .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
         
-        .controls { margin-top: 30px; width: 100%; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
+        .controls { margin-top: 30px; width: 100%; max-width: 600px; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
         input[type=range] { -webkit-appearance: none; width: 100%; height: 12px; border-radius: 10px; margin: 15px 0; border: 3px solid #000; }
         #tempo-slider { background: linear-gradient(to right, var(--easy) 0% 30%, var(--medium) 30% 60%, var(--hard) 60% 85%, var(--expert) 85% 100%); }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: #fff; border: 4px solid #000; cursor: pointer; }
@@ -118,20 +116,23 @@
         
         #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
         
-        .measure-wrapper { position: relative; width: 100%; }
+        .measure-wrapper { position: relative; width: 100%; max-width: 600px; }
         #lock-btn { position: absolute; right: 0; top: -32px; cursor: pointer; background: #1a1a30; border: 2px solid #444; padding: 4px; border-radius: 4px; }
         #lock-btn.locked { border-color: var(--arcade-red); }
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
 
+        /* Fixed Footer Link Alignment */
         .footer-link {
-            text-align: center;
-            padding: 20px 0 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 0 40px 0; 
             font-family: 'Press Start 2P', cursive;
             font-size: 8px;
             letter-spacing: 1px;
             width: 100%;
-            margin-top: auto; /* Pushes it to the very bottom of the page */
+            margin-top: auto; 
         }
         .footer-link a {
             color: var(--primary);
@@ -148,7 +149,8 @@
 <body>
     <div id="start-screen">
         <div class="mascot-box">
-                                                                                                                                                                                                
+            
+                                                                                                                                                                                         
                                                                                                                                                                                      
                                                                                                                                                                                      
                                                                                                                                                                                      
@@ -197,7 +199,8 @@
                                                                                               +=::::::::::::==%:.....:=:=:                                                           
                                                                                                 #*=-:::::::::-+@+::.....:--==-* %*========= @@@#=:........-@                                                     
                                                                                                                       *=-:....+                                                      
-                                                                                                                        ---==* </div>
+                                                                                                                        ---==* 
+</div>
         <div class="title-group">
             <h1 class="main-title">NANA NANA BOO BOO</h1>
             <div class="sub-title">RHYTHM ARCADE</div>
