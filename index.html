@@ -16,21 +16,19 @@
         }
         * { user-select: none; -webkit-user-select: none; outline: none; box-sizing: border-box; touch-action: manipulation; }
         
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--bg); color: var(--text);
+            margin: 0; 
             overflow-x: hidden; 
-            overflow-y: auto;
+            overflow-y: auto; 
+            min-height: 100vh;
             display: flex; 
-            flex-direction: column;
+            flex-direction: column; 
             align-items: center;
+            justify-content: flex-start; 
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
+            padding-top: 40px;
         }
 
         body::before {
@@ -51,7 +49,7 @@
 
        .mascot-box {
             font-family: 'Courier New', Courier, monospace; 
-            font-size: clamp(2px, 0.4vw, 5px); 
+            font-size: clamp(3px, 0.55vw, 7px); 
             line-height: 1.0;
             color: var(--banana-gold);
             white-space: pre;
@@ -59,33 +57,32 @@
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
             margin-bottom: 20px;
             animation: mascotThump 0.5s ease-in-out infinite alternate;
+            -webkit-text-size-adjust: none;
+            text-size-adjust: none;
         }
         
+        @media (max-width: 600px) {
+            .mascot-box { font-size: 1.2vw; }
+            .main-title { font-size: 1.4rem !important; }
+            .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
+        }
+
         @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
         
         .title-group { text-align: center; margin-bottom: 40px; }
         .main-title { 
-            font-size: clamp(1.5rem, 8vw, 3rem); color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
+            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
             margin: 0; animation: neonPulse 1.5s infinite alternate;
         }
         @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
         .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
         .press-start {
-            font-family: 'Press Start 2P'; font-size: 1.2rem; padding: 25px 40px;
+            font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
             background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
-            box-shadow: 0 10px 0 #064d3b;
+            box-shadow: 0 12px 0 #064d3b;
         }
         
-        /* Game Container pushes the footer down */
-        #game-container { 
-            width: 95%; 
-            max-width: 1100px; 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 40px 0 60px 0;
-            flex: 1 0 auto; /* This allows it to grow and push the footer */
-        }
+        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding-bottom: 50px; }
         #game-container.visible { display: flex; }
         
         #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
@@ -106,11 +103,7 @@
             background: #0a0a1a; border: 4px solid #1a1a30; height: 130px; 
             border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        @media (max-width: 600px) { 
-            .beat-cell { height: 100px; } 
-            .beat-cell svg { width: 40px; } 
-            .rhythm-card { width: 70px; height: 90px; }
-        }
+        @media (max-width: 600px) { .beat-cell { height: 100px; } .beat-cell svg { width: 40px; } }
         
         .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
         .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
@@ -120,7 +113,7 @@
         #tempo-slider { background: linear-gradient(to right, var(--easy) 0% 30%, var(--medium) 30% 60%, var(--hard) 60% 85%, var(--expert) 85% 100%); }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: #fff; border: 4px solid #000; cursor: pointer; }
         
-        .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; cursor: pointer; }
+        .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; }
         .patch-btn.active { background: var(--primary); color: #fff; border-color: #fff; }
         
         #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
@@ -131,34 +124,39 @@
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
 
-        /* Solid Footer Logic */
+        /* The Only Change: Ensuring the footer link stays at the absolute bottom */
         .footer-link {
-            flex-shrink: 0; /* Prevents footer from squishing */
             text-align: center;
-            padding: 30px 10px 50px 10px;
+            padding: 40px 0;
             font-family: 'Press Start 2P', cursive;
             font-size: 8px;
             letter-spacing: 1px;
             width: 100%;
-            background: rgba(0,0,0,0.3);
-            border-top: 2px solid #1a1a2e;
+            margin-top: auto; /* Push away from the arcade console */
+            background: transparent;
         }
         .footer-link a {
             color: var(--primary);
             text-decoration: none;
-            opacity: 0.6;
-            transition: all 0.3s;
+            opacity: 0.4;
+            transition: opacity 0.3s;
         }
         .footer-link a:hover {
             opacity: 1;
             text-shadow: 0 0 10px var(--primary);
-            color: #fff;
         }
     </style>
 </head>
 <body>
     <div id="start-screen">
         <div class="mascot-box">
+                                                                                                                                                                                                
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
                                                                                                            @*++#@                                                                    
                                                   .+     #==                                            #=:      ::-=@                                                               
                                                  :::=    - :=                                         #:.             :=%                                                            
@@ -183,7 +181,25 @@
                        #*###*******************##%. .-:...............................-:        :::::::       -:...:::::-===::          :-=***#@                                     
                     #*###********************#%    .::.................................:=.                   ::...........::+##=:   :=+********#%@                                   
                   *###********************#%@     .::....................................:: ::              .-...............:=: =+**************###                                 
-               **##*********************#@       ..::.....................................::   ---:         -..................:=. %%***************##* </div>
+               **##*********************#@       ..::.....................................::   ---:         -..................:=. %%***************##* *###**********************%@         .::.....................::==-::::::-===::.:-.       ......-==-::...............::.   %#**************####                           
+         **###**********************#@          .:-...................:-=:::::::::::::::::.-=:.::::::::::.........:-:::======-::.:-    @##***************##@                         
+        ###***********************#@            .-.................:-==:::::::::::::::-==-:..:-.........::---::::::.-=..      ..-==      %#*****************#%                       
+      %#************************#@             .::..............:=**=+=-:::::::::::::::::-==--+...................:::-=:..                 %#*****************##%                    
+    @##************************#%#* .=.............-*@++===*=::::::::::::::::::-=:.:-......................:=-...                 %#*****************###                  
+   %#************************##****#########%  =:...........=#  ==+===+=-:::::::::::::::::=+:..:-:......................:=:..                 ###*****************##* #***********************##******************+.........:+######**====*-:::::::::::::::::===:..::=:......................=:..                  %#******************##* ##*******************###**********************.......:*********++====*=:::::::::::::::::=-+:......:=-:...................::..                   @#******************##** %#####*********##**************************#:....:************+====+*:::::::::::::::::-===..........::=**=:.............:+=*###@               @#*******************##* ***##############***********************+..:+**************==*#**::::::::::::::::::==*:...........=*****=:............==****#######          %#*******************##* #*********##############*********#++*****************#***+=:::::::::::::::::==+-...........=******#*:..........:+**********###%@       %#*******************##* **************#########*#**********************+=::::::::::::::::::===...........-*********+..........-#*************###%@    ##*******************##* ****##*####******************=-:::::::::::::::::=-+...........:+**********=........:=********************####*********************##     
+                                                    *****####*************=:::::::::::::::::-=#............-***********+........=#**********************##*********************#%    
+                                                            **###*********+::::::::::::::::::=@:...........:+***********+:......-************************##*********************##   
+                                                                  %%##*****=:::::::::::::::::=#=...........=-#***********+:.....=#**************************####****************###  
+                                                                       @@###=:::::::::::::::::*%...........=#-##***********:...:********************************###*************###  
+                                                                            #-::::::::::::::::=@+..........:#==*#***********:.:*************************************************##* %:::::::::::::::::*#-..........:@:=+#***********:+**********************************************###** @::::::::::::::::-#+-..........:@-==#*******************************************************###** @::::::::::::::::=@*::.........:@=-+######********************************************####*#          
+                                                                                #=:::::::::::::::=#=-:.........=@=:==  *******#########***********************#####* #=:::::::::::::::=+:=:........:#*-:=              ************###########***** *=::::::::::::::-=:=:........:*-:=.                          ******* +=::::::::::::::==-=:......:--:=.                                                               
+                                                                                       +=-::::::::::::-===:......:=:=.                                                               
+                                                                                         ==-::::::::::::-=+=:....:=-=.                                                               
+                                                                                           -+-::::::::::::=*@:....-=:=                                                               
+                                                                                              +=::::::::::::==%:.....:=:=:                                                           
+                                                                                                #*=-:::::::::-+@+::.....:--==-* %*========= @@@#=:........-@                                                     
+                                                                                                                      *=-:....+                                                      
+                                                                                                                        ---==* </div>
         <div class="title-group">
             <h1 class="main-title">NANA NANA BOO BOO</h1>
             <div class="sub-title">RHYTHM ARCADE</div>
@@ -230,22 +246,14 @@
     let audioCtx, masterGain, compressor;
     const light = document.getElementById('central-light'), toggleBtn = document.getElementById('toggle-btn'), slider = document.getElementById('tempo-slider'), patchBtns = document.querySelectorAll('.patch-btn'), lockBtn = document.getElementById('lock-btn'), lockIcon = document.getElementById('lock-icon');
     let isRunning = false, tempo = 80, secondsPerBeat = 0.75, nextNoteTime = 0, currentBeatIndex = 0, isTeacherTurn = true, currentRhythm = [], soundType = 'classic', isLocked = false;
-    
     const RHYTHM_CONFIG = { Boo: { offsets: [0], name: "BOO" }, Nana: { offsets: [0, 0.5], name: "NANA" }, Gullible: { offsets: [0, 0.333, 0.666], name: "GUL-LI-BLE" }, LiarLiar: { offsets: [0, 0.25, 0.5, 0.75], name: "LIAR LIAR" }, Rest: { offsets: [], name: "REST" }, Offbeat: { offsets: [0.5], name: "" }, Adv1: { offsets: [0, 0.5, 0.75], name: "" }, Adv2: { offsets: [0, 0.25, 0.5], name: "" }, Adv3: { offsets: [0, 0.25, 0.75], name: "" }, Adv4: { offsets: [0, 0.75], name: "" }, Adv5: { offsets: [0.25, 0.5, 0.75], name: "" }, Adv6: { offsets: [0.5, 0.75], name: "" } };
     const SVGS = { Boo: `<svg viewBox="0 0 60 100" width="35"><ellipse cx="20" cy="80" rx="12" ry="8" fill="white" transform="rotate(-15, 20, 80)"/><rect x="29" y="20" width="4" height="62" fill="white"/></svg>`, Nana: `<svg viewBox="0 0 80 100" width="45"><ellipse cx="15" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 15, 80)"/><rect x="22" y="20" width="4" height="62" fill="white"/><ellipse cx="55" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 55, 80)"/><rect x="62" y="20" width="4" height="62" fill="white"/><rect x="22" y="20" width="44" height="10" fill="white"/></svg>`, Gullible: `<svg viewBox="0 0 100 100" width="55"><text x="50" y="16" fill="white" font-size="16" font-family="'Press Start 2P'" text-anchor="middle">3</text><ellipse cx="12" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 12, 80)"/><rect x="17" y="24" width="3" height="58" fill="white"/><ellipse cx="45" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 45, 80)"/><rect x="50" y="24" width="3" height="58" fill="white"/><ellipse cx="78" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 78, 80)"/><rect x="83" y="24" width="3" height="58" fill="white"/><rect x="17" y="24" width="69" height="8" fill="white"/></svg>`, LiarLiar: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="10" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 10, 80)"/><rect x="15" y="20" width="3" height="62" fill="white"/><ellipse cx="35" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 35, 80)"/><rect x="40" y="20" width="3" height="62" fill="white"/><ellipse cx="60" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 60, 80)"/><rect x="65" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="15" y="20" width="78" height="7" fill="white"/><rect x="15" y="32" width="78" height="7" fill="white"/></svg>`, Rest: `<svg viewBox="0 0 60 100" width="25"><path d="M15 20 L45 20 L25 45 L45 55 L25 80" stroke="#444" stroke-width="10" fill="none" stroke-linecap="round"/></svg>`, Offbeat: `<svg viewBox="0 0 80 100" width="35"><path d="M20,35 Q30,28 30,40 L15,75" stroke="white" stroke-width="4" fill="none"/><circle cx="20" cy="35" r="4" fill="white"/><ellipse cx="50" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 50, 80)"/><rect x="58" y="20" width="4" height="62" fill="white"/><path d="M58,20 Q80,35 58,50" fill="white"/></svg>`, Adv1: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="55" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 55, 80)"/><rect x="60" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="60" y="32" width="33" height="7" fill="white"/></svg>`, Adv2: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="45" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 45, 80)"/><rect x="50" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="20" y="32" width="33" height="7" fill="white"/></svg>`, Adv3: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="50" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 50, 80)"/><rect x="55" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="20" y="32" width="12" height="7" fill="white"/><rect x="78" y="32" width="15" height="7" fill="white"/></svg>`, Adv4: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="25" cy="80" rx="9" ry="6" fill="white" transform="rotate(-15, 25, 80)"/><rect x="32" y="20" width="4" height="62" fill="white"/><circle cx="48" cy="75" r="4" fill="white"/><ellipse cx="75" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 75, 80)"/><rect x="80" y="20" width="3" height="62" fill="white"/><rect x="32" y="20" width="51" height="8" fill="white"/><rect x="68" y="32" width="15" height="7" fill="white"/></svg>`, Adv5: `<svg viewBox="0 0 100 100" width="55"><path d="M 15,30 Q 23,25 23,35 L 15,55" stroke="white" stroke-width="2.5" fill="none"/><circle cx="15" cy="30" r="3" fill="white"/><path d="M 10,45 Q 18,40 18,50 L 5,75" stroke="white" stroke-width="2.5" fill="none"/><circle cx="10" cy="45" r="3" fill="white"/><ellipse cx="35" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 35, 80)"/><rect x="40" y="20" width="3" height="62" fill="white"/><ellipse cx="60" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 60, 80)"/><rect x="65" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="40" y="20" width="53" height="7" fill="white"/><rect x="40" y="32" width="53" height="7" fill="white"/></svg>`, Adv6: `<svg viewBox="0 0 100 100" width="55"><path d="M 20,35 Q 30,28 30,40 L 15,75" stroke="white" stroke-width="3" fill="none"/><circle cx="20" cy="35" r="3.5" fill="white"/><ellipse cx="55" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 55, 80)"/><rect x="60" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="60" y="20" width="33" height="7" fill="white"/><rect x="60" y="32" width="33" height="7" fill="white"/></svg>` };
-
     function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); compressor = audioCtx.createDynamicsCompressor(); masterGain = audioCtx.createGain(); masterGain.connect(compressor); compressor.connect(audioCtx.destination); masterGain.gain.value = 1.2; } if (audioCtx.state === 'suspended') audioCtx.resume(); }
-    
     patchBtns.forEach(btn => { btn.onclick = () => { patchBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); soundType = btn.dataset.patch; initAudio(); }; });
-    
     lockBtn.onclick = () => { isLocked = !isLocked; lockBtn.classList.toggle('locked', isLocked); lockIcon.innerHTML = isLocked ? `<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>` : `<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>`; initAudio(); };
-    
     Object.keys(RHYTHM_CONFIG).forEach(key => { const card = document.createElement('div'); const isDefault = (key === 'Boo' || key === 'Nana'); card.className = `rhythm-card ${isDefault ? 'selected' : ''}`; card.dataset.type = key; const label = RHYTHM_CONFIG[key].name ? `<div style="font-size:6px;">${RHYTHM_CONFIG[key].name}</div>` : ''; card.innerHTML = SVGS[key] + label; card.onclick = () => { card.classList.toggle('selected'); initAudio(); }; if (RHYTHM_CONFIG[key].name && key !== 'Offbeat') { document.getElementById('picker-basic').appendChild(card); } else { document.getElementById('picker-adv').appendChild(card); } });
-    
     document.getElementById('adv-toggle').onclick = function() { const panel = document.getElementById('picker-adv'); panel.style.display = panel.style.display === 'none' ? 'flex' : 'none'; this.innerText = panel.style.display === 'none' ? '[+] SHOW ADVANCED' : '[-] HIDE ADVANCED'; };
-    
     function playTone(freq, time, vol = 0.2, dur = 0.1, isMetronome = false) { if(!audioCtx) return; const g = audioCtx.createGain(); g.connect(masterGain); g.gain.setValueAtTime(vol, time); g.gain.exponentialRampToValueAtTime(0.0001, time + dur); const osc = audioCtx.createOscillator(); if (isMetronome) { osc.frequency.setValueAtTime(freq, time); } else { if (soundType === 'classic') osc.type = 'square'; else if (soundType === 'bloop') osc.type = 'sine'; else osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, time); } osc.connect(g); osc.start(time); osc.stop(time + dur); }
-    
     function schedule() {
         while (isRunning && nextNoteTime < audioCtx.currentTime + 0.1) {
             playTone(currentBeatIndex === 0 ? 300 : 150, nextNoteTime, 0.05, 0.05, true);
@@ -271,7 +279,6 @@
         }
         if (isRunning) requestAnimationFrame(schedule);
     }
-    
     function triggerLight(time) {
         const delay = (time - audioCtx.currentTime) * 1000;
         setTimeout(() => {
@@ -282,7 +289,6 @@
             light.style.backgroundColor = 'var(--teacher)';
         }, delay);
     }
-    
     function updateUI(idx, time, teacher) {
         const delay = (time - audioCtx.currentTime) * 1000;
         setTimeout(() => {
@@ -304,13 +310,9 @@
             if (cells[idx]) cells[idx].classList.add('active');
         }, delay);
     }
-    
     slider.oninput = (e) => { tempo = e.target.value; secondsPerBeat = 60/tempo; document.getElementById('tempo-val').innerText = tempo + " BPM"; let rk = tempo < 90 ? {t:"[EASY]", c:"--easy"} : tempo < 140 ? {t:"[MED]", c:"--medium"} : tempo < 180 ? {t:"[HARD]", c:"--hard"} : {t:"[EXPERT]", c:"--expert"}; document.getElementById('rank-label').innerText = rk.t; document.getElementById('rank-label').style.color = `var(${rk.c})`; };
-    
     const bootAction = () => { initAudio(); document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
-    
     document.getElementById('boot-btn').onclick = bootAction;
-    
     toggleBtn.onclick = () => {
         initAudio();
         if (!isRunning) {
