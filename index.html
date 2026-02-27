@@ -15,22 +15,13 @@
             --easy: #5dade2; --medium: #f1c40f; --hard: #e67e22; --expert: #e94560;
         }
         * { user-select: none; -webkit-user-select: none; outline: none; box-sizing: border-box; touch-action: manipulation; }
-        
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--bg); color: var(--text);
-            margin: 0; 
-            overflow-x: hidden; 
-            overflow-y: auto; 
-            min-height: 100vh;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            justify-content: flex-start; 
+            margin: 0; overflow-x: hidden; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
-            padding-top: 40px; 
         }
-
         body::before {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
@@ -39,54 +30,41 @@
             animation: scanline 30s linear infinite;
         }
         @keyframes scanline { from { background-position: 0 0; } to { background-position: 0 100%; } }
-        
         #start-screen {
             position: fixed; width: 100%; height: 100%; top:0; left:0;
             background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
             transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
         }
         #start-screen.hidden { transform: translateY(-100%); }
-
-       .mascot-box {
-            font-family: 'Courier New', Courier, monospace; 
-            font-size: clamp(3px, 0.55vw, 7px); 
-            line-height: 1.0;
-            color: var(--banana-gold);
-            white-space: pre;
-            text-align: center;
+        .mascot-box {
+            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
+            color: var(--banana-gold); white-space: pre; text-align: center;
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            margin-bottom: 20px;
-            animation: mascotThump 0.5s ease-in-out infinite alternate;
-            -webkit-text-size-adjust: none;
-            text-size-adjust: none;
+            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
         }
-        
+        @media (max-width: 600px) {
+            .mascot-box { font-size: 1.2vw; }
+            .main-title { font-size: 1.4rem !important; }
+            .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
+        }
         @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
-        
-        .title-group { text-align: center; margin-bottom: 40px; width: 100%; }
-        
-        /* Fixed Title Scaling so it doesn't wrap awkwardly */
+        .title-group { text-align: center; margin-bottom: 40px; }
         .main-title { 
-            font-size: clamp(1.5rem, 5vw, 3rem); 
-            color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
+            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
             margin: 0; animation: neonPulse 1.5s infinite alternate;
-            line-height: 1.2;
         }
-        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 4px 4px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 4px 4px 0px #000; } }
+        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
         .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
         .press-start {
-            font-family: 'Press Start 2P'; font-size: 1.5rem; padding: 20px 40px;
+            font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
             background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
             box-shadow: 0 12px 0 #064d3b;
         }
-        
-        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding-bottom: 50px; }
+        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 100px 0; }
         #game-container.visible { display: flex; }
-        
         #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
         .light-flash { animation: flashAnim 0.15s ease-out; }
         @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
-        
         .picker-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
         .rhythm-card { 
             background: var(--card-bg); border: 3px solid #333; padding: 8px; width: 80px; height: 105px;
@@ -94,7 +72,6 @@
         }
         .rhythm-card.selected { border-color: var(--primary); background: #252545; box-shadow: 0 0 15px var(--primary); }
         .rhythm-card svg { height: 45px; width: auto; }
-        
         #adv-toggle { color: var(--primary); font-size: 10px; margin-bottom: 20px; cursor: pointer; }
         #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
         .beat-cell { 
@@ -102,55 +79,26 @@
             border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         @media (max-width: 600px) { .beat-cell { height: 100px; } .beat-cell svg { width: 40px; } }
-        
         .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
         .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
-        
-        .controls { margin-top: 30px; width: 100%; max-width: 600px; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
+        .controls { margin-top: 30px; width: 100%; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
         input[type=range] { -webkit-appearance: none; width: 100%; height: 12px; border-radius: 10px; margin: 15px 0; border: 3px solid #000; }
         #tempo-slider { background: linear-gradient(to right, var(--easy) 0% 30%, var(--medium) 30% 60%, var(--hard) 60% 85%, var(--expert) 85% 100%); }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: #fff; border: 4px solid #000; cursor: pointer; }
-        
         .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; }
         .patch-btn.active { background: var(--primary); color: #fff; border-color: #fff; }
-        
         #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
-        
-        .measure-wrapper { position: relative; width: 100%; max-width: 600px; }
+        .measure-wrapper { position: relative; width: 100%; }
         #lock-btn { position: absolute; right: 0; top: -32px; cursor: pointer; background: #1a1a30; border: 2px solid #444; padding: 4px; border-radius: 4px; }
         #lock-btn.locked { border-color: var(--arcade-red); }
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
-
-        /* Fixed Footer Link Alignment */
-        .footer-link {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 80px 0 40px 0; 
-            font-family: 'Press Start 2P', cursive;
-            font-size: 8px;
-            letter-spacing: 1px;
-            width: 100%;
-            margin-top: auto; 
-        }
-        .footer-link a {
-            color: var(--primary);
-            text-decoration: none;
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-        .footer-link a:hover {
-            opacity: 1;
-            text-shadow: 0 0 10px var(--primary);
-        }
     </style>
 </head>
 <body>
     <div id="start-screen">
         <div class="mascot-box">
-            
-                                                                                                                                                                                         
+                                                                                                                                                                                                
                                                                                                                                                                                      
                                                                                                                                                                                      
                                                                                                                                                                                      
@@ -160,16 +108,18 @@
                                                                                                            @*++#@                                                                    
                                                   .+     #==                                            #=:      ::-=@                                                               
                                                  :::=    - :=                                         #:.             :=%                                                            
-                                                 - .:=  +: :=   =* +:                  .:* - .-   #  :+  -..:#                             @=:                       :#       =.-                                              
+                                                 - .:=  +: :=   =*                                  +:                  .:*                                                          
+                                                 - .-   #  :+  -..:#                             @=:                       :#       =.-                                              
                                                  -  -@  =  :% =: .:                             +.                           #     *. - @*#                                          
                                                  -  :@ @:  :@ =  .=                   @@@@@  *+                              .@==@ =  = =::=                                         
-                                    =+#          -  :@ @  .= *.  :* @@@@@@@@-.                               * :#--  ##: :=                                         
+                                    =+#          -  :@ @  .= *.  :*                  @@@@@@@@-.                               * :#--  ##: :=                                         
                                    ::.:==        -  :@ =  .#::   =                   @@@@@@@@@@@#=:                          :: :#=  :*=: -+                                         
                                      =: :-       -  :@.:  :#-.  .@                   @@@@@@@@@@@@@@@#=:                      =  :--  = -: -#    #-:+                                 
                                        +  :-    ::  :=-   :#:   =                     @@@@@@@@@@@@@@@@#                     :=  :=:  # -. =@   #: :-                                 
-                                        #:  -* * :.   :::   %                    @:*@@@@@@@@@@@@@=--::*%=.             .#: .:=. :#*-  =   *-  -+                                 
-                                         #=                    -                    @:   +@@@@@@@@%:     -@@@@@@+.         =@   =:  - -: .=  =-  -* +-                   +                   @:        ..          =@@@@@@@@@@=.    =@+       = =: :-  -  :+                                   
-                                           -.                 :* #:                     -@@@@@@@@@@@@@@++@ -            :=:-  :+                                    
+                                        #:  -*  *    :.   :::   %                    @:*@@@@@@@@@@@@@=--::*%=.             .#: .:=. :#*-  =   *-  -+                                 
+                                         #=                    -                    @:   +@@@@@@@@%:     -@@@@@@+.         =@   =:  - -: .=  =-  -*                                  
+                                          +-                   +                   @:        ..          =@@@@@@@@@@=.    =@+       = =: :-  -  :+                                   
+                                           -.                 :*                  #:                     -@@@@@@@@@@@@@@++@ -            :=:-  :+                                    
                                            ::                 =                  *:                       *@@@@@@@@@@@@@@@@@.             ..  .=                                     
                                           =:.                 +                 +:                        .*@@@@@@@@@@@@@@@=                  -                                      
                                         *#-.                  =. -+::::::-+#   #: .                         :#@@@@@@@@@@@  -                 .#                                      
@@ -181,33 +131,54 @@
                        #*###*******************##%. .-:...............................-:        :::::::       -:...:::::-===::          :-=***#@                                     
                     #*###********************#%    .::.................................:=.                   ::...........::+##=:   :=+********#%@                                   
                   *###********************#%@     .::....................................:: ::              .-...............:=: =+**************###                                 
-               **##*********************#@       ..::.....................................::   ---:         -..................:=. %%***************##* *###**********************%@         .::.....................::==-::::::-===::.:-.       ......-==-::...............::.   %#**************####                           
+               **##*********************#@       ..::.....................................::   ---:         -..................:=. %%***************##*                              
+            *###**********************%@         .::.....................::==-::::::-===::.:-.       ......-==-::...............::.   %#**************####                           
          **###**********************#@          .:-...................:-=:::::::::::::::::.-=:.::::::::::.........:-:::======-::.:-    @##***************##@                         
         ###***********************#@            .-.................:-==:::::::::::::::-==-:..:-.........::---::::::.-=..      ..-==      %#*****************#%                       
       %#************************#@             .::..............:=**=+=-:::::::::::::::::-==--+...................:::-=:..                 %#*****************##%                    
-    @##************************#%#* .=.............-*@++===*=::::::::::::::::::-=:.:-......................:=-...                 %#*****************###                  
-   %#************************##****#########%  =:...........=#  ==+===+=-:::::::::::::::::=+:..:-:......................:=:..                 ###*****************##* #***********************##******************+.........:+######**====*-:::::::::::::::::===:..::=:......................=:..                  %#******************##* ##*******************###**********************.......:*********++====*=:::::::::::::::::=-+:......:=-:...................::..                   @#******************##** %#####*********##**************************#:....:************+====+*:::::::::::::::::-===..........::=**=:.............:+=*###@               @#*******************##* ***##############***********************+..:+**************==*#**::::::::::::::::::==*:...........=*****=:............==****#######          %#*******************##* #*********##############*********#++*****************#***+=:::::::::::::::::==+-...........=******#*:..........:+**********###%@       %#*******************##* **************#########*#**********************+=::::::::::::::::::===...........-*********+..........-#*************###%@    ##*******************##* ****##*####******************=-:::::::::::::::::=-+...........:+**********=........:=********************####*********************##     
+    @##************************#%#*            .=.............-*@++===*=::::::::::::::::::-=:.:-......................:=-...                 %#*****************###                  
+   %#************************##****#########%  =:...........=#  ==+===+=-:::::::::::::::::=+:..:-:......................:=:..                 ###*****************##*                
+   #***********************##******************+.........:+######**====*-:::::::::::::::::===:..::=:......................=:..                  %#******************##*              
+  ##*******************###**********************.......:*********++====*=:::::::::::::::::=-+:......:=-:...................::..                   @#******************##**           
+    %#####*********##**************************#:....:************+====+*:::::::::::::::::-===..........::=**=:.............:+=*###@               @#*******************##*          
+        ***##############***********************+..:+**************==*#**::::::::::::::::::==*:...........=*****=:............==****#######          %#*******************##*        
+               #*********##############*********#++*****************#***+=:::::::::::::::::==+-...........=******#*:..........:+**********###%@       %#*******************##*       
+                         **************#########*#**********************+=::::::::::::::::::===...........-*********+..........-#*************###%@    ##*******************##*      
+                                            ****##*####******************=-:::::::::::::::::=-+...........:+**********=........:=********************####*********************##     
                                                     *****####*************=:::::::::::::::::-=#............-***********+........=#**********************##*********************#%    
                                                             **###*********+::::::::::::::::::=@:...........:+***********+:......-************************##*********************##   
                                                                   %%##*****=:::::::::::::::::=#=...........=-#***********+:.....=#**************************####****************###  
                                                                        @@###=:::::::::::::::::*%...........=#-##***********:...:********************************###*************###  
-                                                                            #-::::::::::::::::=@+..........:#==*#***********:.:*************************************************##* %:::::::::::::::::*#-..........:@:=+#***********:+**********************************************###** @::::::::::::::::-#+-..........:@-==#*******************************************************###** @::::::::::::::::=@*::.........:@=-+######********************************************####*#          
-                                                                                #=:::::::::::::::=#=-:.........=@=:==  *******#########***********************#####* #=:::::::::::::::=+:=:........:#*-:=              ************###########***** *=::::::::::::::-=:=:........:*-:=.                          ******* +=::::::::::::::==-=:......:--:=.                                                               
+                                                                            #-::::::::::::::::=@+..........:#==*#***********:.:*************************************************##*  
+                                                                             %:::::::::::::::::*#-..........:@:=+#***********:+**********************************************###**   
+                                                                              @::::::::::::::::-#+-..........:@-==#*******************************************************###**      
+                                                                               @::::::::::::::::=@*::.........:@=-+######********************************************####*#          
+                                                                                #=:::::::::::::::=#=-:.........=@=:==  *******#########***********************#####*                 
+                                                                                 #=:::::::::::::::=+:=:........:#*-:=              ************###########*****                      
+                                                                                   *=::::::::::::::-=:=:........:*-:=.                          *******                              
+                                                                                     +=::::::::::::::==-=:......:--:=.                                                               
                                                                                        +=-::::::::::::-===:......:=:=.                                                               
                                                                                          ==-::::::::::::-=+=:....:=-=.                                                               
                                                                                            -+-::::::::::::=*@:....-=:=                                                               
                                                                                               +=::::::::::::==%:.....:=:=:                                                           
-                                                                                                #*=-:::::::::-+@+::.....:--==-* %*========= @@@#=:........-@                                                     
+                                                                                                #*=-:::::::::-+@+::.....:--==-*                                                      
+                                                                                                    %*========= @@@#=:........-@                                                     
                                                                                                                       *=-:....+                                                      
-                                                                                                                        ---==* 
-</div>
+                                                                                                                        ---==*                                                       
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+        </div>
         <div class="title-group">
             <h1 class="main-title">NANA NANA BOO BOO</h1>
             <div class="sub-title">RHYTHM ARCADE</div>
         </div>
         <button class="press-start" id="boot-btn">START GAME</button>
     </div>
-
     <div id="game-container">
         <div id="central-light"></div>
         <div class="picker-container" id="picker-basic"></div>
@@ -236,13 +207,6 @@
             <button id="toggle-btn">START</button>
         </div>
     </div>
-
-    <div class="footer-link">
-        <a href="https://schemada.gumroad.com/l/zoyujc" target="_blank">
-            [ SUPPORT THE DEV / BUY A BANANA ]
-        </a>
-    </div>
-
 <script>
     let audioCtx, masterGain, compressor;
     const light = document.getElementById('central-light'), toggleBtn = document.getElementById('toggle-btn'), slider = document.getElementById('tempo-slider'), patchBtns = document.querySelectorAll('.patch-btn'), lockBtn = document.getElementById('lock-btn'), lockIcon = document.getElementById('lock-icon');
