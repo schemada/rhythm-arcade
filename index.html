@@ -21,14 +21,14 @@
             background-color: var(--bg); color: var(--text);
             margin: 0; 
             overflow-x: hidden; 
-            overflow-y: auto; 
+            overflow-y: auto; /* Allows scrolling if the screen is small */
             min-height: 100vh;
             display: flex; 
-            flex-direction: column; 
+            flex-direction: column; /* This stacks game + link vertically */
             align-items: center;
-            justify-content: flex-start; 
+            justify-content: flex-start; /* Start from top so it scrolls naturally */
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
-            padding-top: 40px;
+            padding-top: 40px; /* Gives the game a little room at the top */
         }
 
         body::before {
@@ -124,16 +124,14 @@
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
 
-        /* The Only Change: Ensuring the footer link stays at the absolute bottom */
         .footer-link {
             text-align: center;
-            padding: 40px 0;
+            padding: 80px 0 40px 0; /* Huge top padding ensures it never rides up into the console */
             font-family: 'Press Start 2P', cursive;
             font-size: 8px;
             letter-spacing: 1px;
             width: 100%;
-            margin-top: auto; /* Push away from the arcade console */
-            background: transparent;
+            margin-top: auto; /* Keeps it naturally at the bottom of the scroll */
         }
         .footer-link a {
             color: var(--primary);
