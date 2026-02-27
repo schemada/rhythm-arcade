@@ -18,7 +18,8 @@
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--bg); color: var(--text);
-            margin: 0; overflow-x: hidden; min-height: 100vh;
+            margin: 0; padding-bottom: 80px; /* Space for fixed button */
+            overflow-x: hidden; min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
         }
@@ -36,14 +37,24 @@
             transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
         }
         #start-screen.hidden { transform: translateY(-100%); }
+        
+        /* Fixed Mascot Styling */
         .mascot-box {
-            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
-            color: var(--banana-gold); white-space: pre; text-align: center;
+            color: var(--banana-gold);
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
+            margin-bottom: 30px; 
+            animation: mascotThump 0.5s ease-in-out infinite alternate;
         }
+        .mascot-box pre {
+            font-family: monospace; 
+            font-size: 0.55vw; 
+            line-height: 1.0;
+            margin: 0;
+            white-space: pre; /* Keeps the spacing exact */
+        }
+        
         @media (max-width: 600px) {
-            .mascot-box { font-size: 1.2vw; }
+            .mascot-box pre { font-size: 1.1vw; }
             .main-title { font-size: 1.4rem !important; }
             .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
         }
@@ -94,46 +105,39 @@
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
 
-        /* Support Button Styling */
-        .dev-support-footer {
+        /* FIXED SUPPORT BUTTON */
+        .dev-footer {
             position: fixed;
-            bottom: 20px;
+            bottom: 0;
             left: 0;
             width: 100%;
+            padding: 15px 0;
+            background: rgba(8, 8, 26, 0.95);
+            border-top: 2px solid #333;
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Under the scanline */
+            z-index: 2000; /* Stays above everything */
         }
         .dev-support-btn {
             font-family: 'Press Start 2P', cursive;
             font-size: 9px;
-            color: var(--primary);
+            color: var(--banana-gold);
             text-decoration: none;
-            padding: 10px 20px;
-            background: rgba(26, 26, 46, 0.8);
-            border: 2px solid var(--primary);
-            border-radius: 5px;
-            transition: all 0.2s;
-            text-align: center;
+            padding: 12px 24px;
+            border: 2px solid var(--banana-gold);
+            transition: 0.2s;
         }
         .dev-support-btn:hover {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 15px var(--primary);
+            background: var(--banana-gold);
+            color: #000;
+            box-shadow: 0 0 20px var(--banana-gold);
         }
     </style>
 </head>
 <body>
     <div id="start-screen">
         <div class="mascot-box">
-                                                                                                                                                                                                
-                                                                                                                                                                                     
-                                                                                                                                                                                     
-                                                                                                                                                                                     
-                                                                                                                                                                                     
-                                                                                                                                                                                     
-                                                                                                                                                                                     
+<pre>
                                                                                                            @*++#@                                                                    
                                                   .+     #==                                            #=:      ::-=@                                                               
                                                  :::=    - :=                                         #:.             :=%                                                            
@@ -176,7 +180,8 @@
                                                                                               +=::::::::::::==%:.....:=:=:                                                           
                                                                                                 #*=-:::::::::-+@+::.....:--==-* %*========= @@@#=:........-@                                                     
                                                                                                                       *=-:....+                                                      
-                                                                                                                        ---==* </div>
+                                                                                                                        ---==*</pre>
+        </div>
         <div class="title-group">
             <h1 class="main-title">NANA NANA BOO BOO</h1>
             <div class="sub-title">RHYTHM ARCADE</div>
@@ -213,7 +218,7 @@
         </div>
     </div>
 
-    <footer class="dev-support-footer">
+    <footer class="dev-footer">
         <a href="https://schemada.gumroad.com/l/zoyujc" target="_blank" class="dev-support-btn">
             [ SUPPORT THE DEV / BUY A BANANA ]
         </a>
