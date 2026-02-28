@@ -283,7 +283,7 @@
 <script>
     let audioCtx, masterGain, compressor;
     const light = document.getElementById('central-light'), toggleBtn = document.getElementById('toggle-btn'), slider = document.getElementById('tempo-slider'), patchBtns = document.querySelectorAll('.patch-btn'), lockBtn = document.getElementById('lock-btn'), lockIcon = document.getElementById('lock-icon');
-    let isRunning = false, tempo = 80, secondsPerBeat = 0.75, nextNoteTime = 0, currentBeatIndex = 0, isTeacherTurn = true, currentRhythm = [], soundType = 'classic', isLocked = false;
+    let isRunning = false, tempo = 80, secondsPerBeat = 0.75, nextNoteTime = 0, currentBeatIndex = 0, isTeacherTurn = true, currentRhythm = [], soundType = 'classic', isLocked = false, isFirstBoot = true;
     
     // NEW: Time Signature State
     let beatsPerMeasure = 4;
@@ -322,13 +322,14 @@
         // Refresh the UI right now so the old boxes disappear
         updateUI(currentBeatIndex, audioCtx ? audioCtx.currentTime : 0, isTeacherTurn);
     };
-   function generateNewPattern() {
+  function generateNewPattern() {
         const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
         if (selected.length === 0) return;
         
-        // Check if we are doing the "Classic" Nana/Boo loop (only if in 4/4)
-        if (beatsPerMeasure === 4 && selected.includes("Nana") && selected.includes("Boo") && selected.length === 2) {
+        // Check if we are doing the "Classic" Nana/Boo loop (ONLY for the first round)
+        if (isFirstBoot && beatsPerMeasure === 4 && selected.includes("Nana") && selected.includes("Boo") && selected.length === 2) {
              currentRhythm = ["Nana", "Nana", "Boo", "Boo"];
+             isFirstBoot = false; // Turn the switch off so it randomizes next time
         } else {
             // Otherwise, fill whatever measure length we have with random selected beats
             currentRhythm = Array.from({length: beatsPerMeasure}, () => selected[Math.floor(Math.random() * selected.length)]);
