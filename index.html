@@ -15,6 +15,7 @@
 <link rel="manifest" href="manifest.json">
     <title>NANA NANA BOO BOO // RHYTHM ARCADE</title>
     <style>
+      <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
         :root {
             --primary: #5dade2; --teacher: #ff9f43; --student: #10ac84;
@@ -30,144 +31,87 @@
             display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
         }
-        body::before {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 1001; background-size: 100% 6px, 4px 100%; pointer-events: none;
-            animation: scanline 30s linear infinite;
-        }
-        @keyframes scanline { from { background-position: 0 0; } to { background-position: 0 100%; } }
+
+        /* --- START SCREEN FIXES --- */
         #start-screen {
             position: fixed; width: 100%; height: 100%; top:0; left:0;
-            background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
+            background: inherit; display: flex; flex-direction: column; 
+            justify-content: space-evenly; align-items: center; z-index: 50;
             transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
         }
         #start-screen.hidden { transform: translateY(-100%); }
+
         .mascot-box {
-            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
+            font-family: monospace; font-size: 1.2vw; line-height: 1.1;
             color: var(--banana-gold); white-space: pre; text-align: center;
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
+            animation: mascotThump 0.5s ease-in-out infinite alternate;
         }
+
+        /* Landscape Mobile Fix (iPhone) */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #start-screen { flex-direction: row; justify-content: center; gap: 40px; }
+            .mascot-box { font-size: 0.6vh; margin-bottom: 0; }
+            .title-group { margin-bottom: 0; }
+            .main-title { font-size: 1.2rem !important; }
+            .press-start { font-size: 1rem !important; padding: 15px 30px !important; }
+            #game-container { padding: 10px 0 20px 0; }
+            .beat-cell { height: 80px !important; }
+        }
+
         @media (max-width: 600px) {
-            .mascot-box { font-size: 1.2vw; }
+            .mascot-box { font-size: 1.5vw; }
             .main-title { font-size: 1.4rem !important; }
             .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
+            
+            /* HAPPY MEDIUM: Keep the play cards big, make picker cards slightly shorter */
+            .rhythm-card { height: 85px !important; width: 65px !important; }
+            .rhythm-card svg { height: 30px !important; }
+            .beat-cell { height: 120px !important; } 
+            .beat-cell svg { width: 45px !important; }
+            .beat-cell div { font-size: 8px !important; }
         }
+
         @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
-        .title-group { text-align: center; margin-bottom: 40px; }
+
+        .title-group { text-align: center; }
         .main-title { 
             font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
             margin: 0; animation: neonPulse 1.5s infinite alternate;
         }
         @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
-        .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
+        
         .press-start {
             font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
             background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
             box-shadow: 0 12px 0 #064d3b;
         }
+
+        /* --- GAME UI --- */
         #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 100px 0; }
         #game-container.visible { display: flex; }
-        #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
-        .light-flash { animation: flashAnim 0.15s ease-out; }
-        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
         .picker-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        
         .rhythm-card { 
             background: var(--card-bg); border: 3px solid #333; padding: 8px; width: 80px; height: 105px;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer;
         }
         .rhythm-card.selected { border-color: var(--primary); background: #252545; box-shadow: 0 0 15px var(--primary); }
-        .rhythm-card svg { height: 45px; width: auto; }
-        #adv-toggle { color: var(--primary); font-size: 10px; margin-bottom: 20px; cursor: pointer; }
+        
         #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
         .beat-cell { 
             background: #0a0a1a; border: 4px solid #1a1a30; height: 130px; 
             border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        @media (max-width: 600px) { .beat-cell { height: 100px; } .beat-cell svg { width: 40px; } }
         .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
         .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
-        .controls { margin-top: 30px; width: 100%; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
-        input[type=range] { -webkit-appearance: none; width: 100%; height: 12px; border-radius: 10px; margin: 15px 0; border: 3px solid #000; }
-        #tempo-slider { background: linear-gradient(to right, var(--easy) 0% 30%, var(--medium) 30% 60%, var(--hard) 60% 85%, var(--expert) 85% 100%); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: #fff; border: 4px solid #000; cursor: pointer; }
-        .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; }
-        .patch-btn.active { background: var(--primary); color: #fff; border-color: #fff; }
+
+        /* General Controls */
+        .controls { margin-top: 20px; width: 100%; background: #111125; padding: 15px; border-radius: 15px; text-align: center; border: 4px solid #333; }
         #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
-        .measure-wrapper { position: relative; width: 100%; }
-        #lock-btn { position: absolute; right: 0; top: -32px; cursor: pointer; background: #1a1a30; border: 2px solid #444; padding: 4px; border-radius: 4px; }
-        #lock-btn.locked { border-color: var(--arcade-red); }
-        #lock-btn svg { width: 16px; height: 16px; fill: #888; }
-        #lock-btn.locked svg { fill: var(--arcade-red); }
         
-        /* NEW SUPPORT LINK STYLES */
-        .support-link {
-            margin-top: 30px;
-            font-size: 8px;
-            color: #ffffff;
-            opacity: 0.4;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: opacity 0.3s ease, color 0.3s ease;
-            text-align: center;
-            cursor: pointer;
-        }
-        .support-link:hover {
-            opacity: 1;
-            color: var(--banana-gold);
-        }
-        /* --- DESKTOP UPSCALING (Only kicks in above 1024px) --- */
-@media (min-width: 1025px) {
-    /* 1. Make the ASCII Mascot readable */
-    .mascot-box { 
-        font-size: 8px !important; /* Fixed size works better than vw on desktop */
-        line-height: 1.2;
-        margin-bottom: 40px;
-    }
-
-    /* 2. Scale up the Title and Start Button */
-    .main-title { font-size: 4.5rem; }
-    .press-start { font-size: 2.5rem; padding: 40px 80px; }
-
-    /* 3. Scale the Rhythm Cards & Beat Cells */
-    .rhythm-card { 
-        width: 110px; 
-        height: 145px; 
-        padding: 12px;
-    }
-    .rhythm-card svg { height: 65px; }
-    
-    .beat-cell { 
-        height: 180px; 
-    }
-    .beat-cell svg { width: 80px; }
-
-    /* 4. Make the UI labels and buttons bigger */
-    #status-banner { font-size: 2rem; margin-bottom: 30px; }
-    .controls { padding: 40px; }
-    #toggle-btn { font-size: 2rem; padding: 30px; }
-    .patch-btn { font-size: 12px; padding: 12px; }
-    
-    /* 5. Scale the text inside the cells */
-    .beat-cell div { font-size: 12px !important; }
-}
-        /* This makes the labels slightly smaller when there are lots of boxes */
-.beat-cell div {
-    font-size: 0.5rem;
-    text-align: center;
-}
-        /* Keeps boxes from getting too tall or too squished */
-.beat-cell {
-    min-width: 0; /* Prevents overflow */
-    padding: 5px;
-}
-
-.beat-cell svg {
-    max-width: 80%; /* Scales the icons down automatically */
-    height: auto;
-}
+        .support-link { margin-top: 20px; font-size: 8px; color: #ffffff; opacity: 0.4; text-decoration: none; display: block; }
+    </style>
     </style>
 </head>
 <body>
