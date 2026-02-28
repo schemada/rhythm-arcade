@@ -18,8 +18,7 @@
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: var(--bg); color: var(--text);
-            margin: 0; padding-bottom: 80px; /* Space for fixed button */
-            overflow-x: hidden; min-height: 100vh;
+            margin: 0; overflow-x: hidden; min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
         }
@@ -31,8 +30,37 @@
             animation: scanline 30s linear infinite;
         }
         @keyframes scanline { from { background-position: 0 0; } to { background-position: 0 100%; } }
-       
-        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 120px 0; }
+        #start-screen {
+            position: fixed; width: 100%; height: 100%; top:0; left:0;
+            background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
+            transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
+        }
+        #start-screen.hidden { transform: translateY(-100%); }
+        .mascot-box {
+            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
+            color: var(--banana-gold); white-space: pre; text-align: center;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
+        }
+        @media (max-width: 600px) {
+            .mascot-box { font-size: 1.2vw; }
+            .main-title { font-size: 1.4rem !important; }
+            .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
+        }
+        @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
+        .title-group { text-align: center; margin-bottom: 40px; }
+        .main-title { 
+            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
+            margin: 0; animation: neonPulse 1.5s infinite alternate;
+        }
+        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
+        .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
+        .press-start {
+            font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
+            background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
+            box-shadow: 0 12px 0 #064d3b;
+        }
+        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 100px 0; }
         #game-container.visible { display: flex; }
         #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
         .light-flash { animation: flashAnim 0.15s ease-out; }
@@ -65,59 +93,12 @@
         #lock-btn.locked { border-color: var(--arcade-red); }
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
-
-
-    #start-screen {
-        position: fixed; 
-        inset: 0; 
-        background: #000; /* Or your theme color */
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
-        z-index: 100;
-        padding: 20px;
-    }
-
-    .mascot-box {
-        font-family: 'Courier New', Courier, monospace !important;
-        font-size: clamp(2px, 0.45vw, 6px); 
-        line-height: 1.0 !important;
-        white-space: pre !important;
-        color: #FFD700; /* Banana Gold */
-        text-align: center;
-        margin-bottom: 10px;
-        -webkit-text-size-adjust: none;
-    }
-
-    .title-group { text-align: center; margin-bottom: 20px; }
-    .main-title { font-family: 'Press Start 2P', cursive; font-size: 24px; color: #fff; margin: 0; }
-    .sub-title { font-family: 'Press Start 2P', cursive; font-size: 10px; color: #5DADE2; }
-
-    /* THE SUBTLE BUTTON: It's locked to the bottom and won't move the banana */
-    .dev-support {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-    }
-
-    .dev-support a {
-        font-family: 'Press Start 2P', cursive;
-        font-size: 7px;
-        color: #5DADE2;
-        text-decoration: none;
-        opacity: 0.2; /* Very faint */
-        transition: opacity 0.3s;
-    }
-    .dev-support a:hover { opacity: 0.8; }
-</style>
+    </style>
 </head>
 <body>
-   <div id="start-screen">
-    <div class="mascot-box">
-                                                                                                                                                                
+    <div id="start-screen">
+        <div class="mascot-box">
+                                                                                                                                                                                
                                                                                                                                                         
                                                                                                                                                         
                                                                                                                                                         
@@ -179,20 +160,13 @@
                                                                                                                                                         
                                                                                                                                                         
                                                                                                                                                         
-</div>
-
-    <div class="title-group">
-        <h1 class="main-title">NANA NANA BOO BOO</h1>
-        <div class="sub-title">RHYTHM ARCADE</div>
+        </div>
+        <div class="title-group">
+            <h1 class="main-title">NANA NANA BOO BOO</h1>
+            <div class="sub-title">RHYTHM ARCADE</div>
+        </div>
+        <button class="press-start" id="boot-btn">START GAME</button>
     </div>
-
-    <button class="press-start" id="boot-btn" style="padding: 15px 30px; cursor: pointer;">START GAME</button>
-
-    <div class="dev-support">
-        <a href="https://schemada.gumroad.com/l/zoyujc" target="_blank">[ SUPPORT THE DEV / BUY A BANANA ]</a>
-    </div>
-</div>
-
     <div id="game-container">
         <div id="central-light"></div>
         <div class="picker-container" id="picker-basic"></div>
@@ -221,13 +195,6 @@
             <button id="toggle-btn">START</button>
         </div>
     </div>
-
-    <footer class="dev-footer">
-        <a href="https://schemada.gumroad.com/l/zoyujc" target="_blank" class="dev-support-btn">
-            [ SUPPORT THE DEV / BUY A BANANA ]
-        </a>
-    </footer>
-
 <script>
     let audioCtx, masterGain, compressor;
     const light = document.getElementById('central-light'), toggleBtn = document.getElementById('toggle-btn'), slider = document.getElementById('tempo-slider'), patchBtns = document.querySelectorAll('.patch-btn'), lockBtn = document.getElementById('lock-btn'), lockIcon = document.getElementById('lock-icon');
