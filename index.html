@@ -167,6 +167,22 @@
     max-width: 80%; /* Scales the icons down automatically */
     height: auto;
 }
+        /* THE ONLY FIX: Prevent Start Screen overlap on Landscape iPhone */
+        @media (orientation: landscape) and (max-height: 500px) {
+            #start-screen { 
+                flex-direction: row !important; 
+                justify-content: center !important; 
+                gap: 5vw !important; 
+                padding: 10px !important;
+            }
+            .mascot-box { 
+                font-size: 0.5vh !important; /* Forces the banana to scale to the height */
+                margin: 0 !important; 
+            }
+            .title-group { margin-bottom: 0 !important; }
+            .main-title { font-size: 1.2rem !important; }
+            .press-start { font-size: 1rem !important; padding: 15px 30px !important; margin: 0 !important; }
+        }
     </style>
 </head>
 <body>
