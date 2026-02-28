@@ -336,6 +336,16 @@
             isRunning = true; currentBeatIndex = 0; isTeacherTurn = true; nextNoteTime = audioCtx.currentTime + 0.1; toggleBtn.innerText = "STOP"; schedule();
         } else { isRunning = false; toggleBtn.innerText = "START"; }
     };
+    document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        // If you have an audio variable (usually called 'audioCtx' or 'context')
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume().then(() => {
+                console.log("Game audio resumed successfully!");
+            });
+        }
+    }
+});
 </script>
 </body>
 </html>
