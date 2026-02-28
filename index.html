@@ -39,18 +39,21 @@
             animation: scanline 30s linear infinite;
         }
         @keyframes scanline { from { background-position: 0 0; } to { background-position: 0 100%; } }
-        #start-screen {
-            position: fixed; width: 100%; height: 100%; top:0; left:0;
-            background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
-            transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
-        }
-        #start-screen.hidden { transform: translateY(-100%); }
-        .mascot-box {
-            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
-            color: var(--banana-gold); white-space: pre; text-align: center;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
-        }
+        /* THE START SCREEN - THE FIX */
+    #start-screen {
+        position: absolute; inset: 0; z-index: 100;
+        display: flex; flex-direction: column; 
+        justify-content: center; align-items: center;
+        padding: 10px; background: inherit;
+    }
+    #start-screen.hidden { display: none; }
+       /* The Mascot: Scales by HEIGHT (vh) so it never pushes the button away */
+    .mascot-box {
+        font-family: monospace; font-weight: bold;
+        color: var(--banana-gold); white-space: pre; text-align: center;
+        font-size: 0.5vh; line-height: 1.1; /* Super tiny base for huge ASCII strings */
+        margin-bottom: 2vh;
+    }
         @media (max-width: 600px) {
             .mascot-box { font-size: 1.2vw; }
             .main-title { font-size: 1.4rem !important; }
@@ -58,10 +61,12 @@
         }
         @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
         .title-group { text-align: center; margin-bottom: 40px; }
-        .main-title { 
-            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
-            margin: 0; animation: neonPulse 1.5s infinite alternate;
-        }
+       .main-title { font-size: 6vw; margin: 0; text-shadow: 4px 4px 0px #000; color: #fff; }
+    .press-start { 
+        font-family: 'Press Start 2P'; font-size: 4vw; padding: 20px 40px;
+        background: #10ac84; color: #fff; border: 4px solid #fff; margin-top: 20px;
+        box-shadow: 0 6px 0 #064d3b;
+    }
         @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
         .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
         .press-start {
@@ -69,24 +74,27 @@
             background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
             box-shadow: 0 12px 0 #064d3b;
         }
-        #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 100px 0; }
-        #game-container.visible { display: flex; }
+       #game-container { 
+        width: 100%; height: 100%; display: none; 
+        flex-direction: column; align-items: center; justify-content: space-between;
+        padding: 10px; 
+    }
+    #game-container.visible { display: flex; }
         #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
         .light-flash { animation: flashAnim 0.15s ease-out; }
         @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
-        .picker-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .rhythm-card { 
-            background: var(--card-bg); border: 3px solid #333; padding: 8px; width: 80px; height: 105px;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer;
-        }
-        .rhythm-card.selected { border-color: var(--primary); background: #252545; box-shadow: 0 0 15px var(--primary); }
-        .rhythm-card svg { height: 45px; width: auto; }
+       .picker-container { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; height: auto; }
+    .rhythm-card { background: var(--card-bg); border: 2px solid #333; width: 50px; height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .rhythm-card svg { width: 25px; height: auto; }
         #adv-toggle { color: var(--primary); font-size: 10px; margin-bottom: 20px; cursor: pointer; }
-        #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
-        .beat-cell { 
-            background: #0a0a1a; border: 4px solid #1a1a30; height: 130px; 
-            border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
+       #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; flex-grow: 1; margin: 10px 0; }
+    .beat-cell { background: #0a0a1a; border: 3px solid #1a1a30; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+    .beat-cell svg { width: 40px; height: auto; }
+
+    .controls { width: 100%; background: #111125; padding: 10px; border: 3px solid #333; border-radius: 12px; }
+    #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 15px; background: var(--arcade-red); color: #fff; border: none; font-size: 1rem; }
+    
+    .support-link { font-size: 8px; color: #666; text-decoration: none; margin-top: 5px; }
         @media (max-width: 600px) { .beat-cell { height: 100px; } .beat-cell svg { width: 40px; } }
         .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
         .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
@@ -102,6 +110,13 @@
         #lock-btn.locked { border-color: var(--arcade-red); }
         #lock-btn svg { width: 16px; height: 16px; fill: #888; }
         #lock-btn.locked svg { fill: var(--arcade-red); }
+        /* Landscape iPhone Safety */
+    @media (orientation: landscape) and (max-height: 500px) {
+        #start-screen { flex-direction: row; gap: 20px; }
+        .mascot-box { font-size: 0.4vh; margin: 0; }
+        .main-title { font-size: 1.2rem; }
+        .press-start { padding: 10px 20px; font-size: 0.8rem; }
+    }
         
         /* NEW SUPPORT LINK STYLES */
         .support-link {
