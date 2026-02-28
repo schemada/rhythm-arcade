@@ -417,7 +417,7 @@ function updateUI(idx, time, teacher) {
         }, delay);
     }
     slider.oninput = (e) => { tempo = e.target.value; secondsPerBeat = 60/tempo; document.getElementById('tempo-val').innerText = tempo + " BPM"; let rk = tempo < 90 ? {t:"[EASY]", c:"--easy"} : tempo < 140 ? {t:"[MED]", c:"--medium"} : tempo < 180 ? {t:"[HARD]", c:"--hard"} : {t:"[EXPERT]", c:"--expert"}; document.getElementById('rank-label').innerText = rk.t; document.getElementById('rank-label').style.color = `var(${rk.c})`; };
-    const bootAction = () => { initAudio(); generateNewPattern(); updateUI(0, 0, true); document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
+    const bootAction = () => { initAudio(); generateNewPattern(); updateUI(0, 0, true); document.getElementById('start-screen').style.display = 'none'; document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
     document.getElementById('boot-btn').onclick = bootAction;
     toggleBtn.onclick = () => {
         initAudio();
