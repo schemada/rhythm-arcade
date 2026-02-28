@@ -1,0 +1,21 @@
+{
+  "short_name": "Boo Boo",
+  "name": "Nana Nana Boo Boo Rhythm Arcade",
+  "icons": [
+    {
+      "src": "your-icon-name.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "your-icon-name-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#08081a",
+  "theme_color": "#e94560",
+  "display": "standalone",
+  "orientation": "portrait"
+}
