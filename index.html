@@ -152,6 +152,11 @@
     /* 5. Scale the text inside the cells */
     .beat-cell div { font-size: 12px !important; }
 }
+        /* This makes the labels slightly smaller when there are lots of boxes */
+.beat-cell div {
+    font-size: 0.5rem;
+    text-align: center;
+}
     </style>
 </head>
 <body>
@@ -222,12 +227,14 @@
         <div id="time-sig-panel" style="display:none; text-align: center; margin-bottom: 15px;">
             <div style="font-size: 8px; color: var(--primary); margin-bottom: 10px;">TIME SIGNATURE:</div>
             <select id="time-sig-select" style="background: #111125; color: #fff; border: 2px solid #444; font-family: 'Press Start 2P'; font-size: 10px; padding: 8px; cursor: pointer;">
+                <option value="1">1/4</option>
                 <option value="2">2/4</option>
                 <option value="3">3/4</option>
                 <option value="4" selected>4/4</option>
                 <option value="5">5/4</option>
                 <option value="6">6/4</option>
                 <option value="7">7/4</option>
+                <option value="8">8/4</option>
             </select>
         </div>
 
