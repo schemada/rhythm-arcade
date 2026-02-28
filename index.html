@@ -302,32 +302,38 @@
         this.innerText = isHidden ? '[-] HIDE ADVANCED' : '[+] SHOW ADVANCED'; 
     };
 
-    // NEW: Time Signature Selection Logic
-   // BULLETPROOF: Time Signature Selection Logic
-    timeSigSelect.onchange = (e) => {
-        // 1. Immediately stop the loop to prevent "breaking"
-        isRunning = false;
-        toggleBtn.innerText = "START";
-        
-        // 2. Update the math
+   timeSigSelect.onchange = (e) => {
         beatsPerMeasure = parseInt(e.target.value);
-        currentBeatIndex = 0;
-        isTeacherTurn = true;
         
-        // 3. Update the Grid layout
-        document.getElementById('measure').style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
+        // 1. Instantly update the visual grid
+        const measureEl = document.getElementById('measure');
+        measureEl.style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
         
-        // 4. Force a fresh UI and pattern update
+        // 2. Immediate Pattern Check: 
+        // If we switched to a signature smaller than our current beat, 
+        // reset to beat 0 to avoid "ghost" boxes.
+        if (currentBeatIndex >= beatsPerMeasure) {
+            currentBeatIndex = 0;
+        }
+
+        // 3. Hot-swap the rhythm pattern so it fills the new measure length
         generateNewPattern(); 
-        updateUI(0, audioCtx ? audioCtx.currentTime : 0, true);
-        
-        console.log("Time Signature Reset to: " + beatsPerMeasure + "/4");
+
+        // 4. Force a UI refresh so the user sees the new boxes right now
+        updateUI(currentBeatIndex, audioCtx ? audioCtx.currentTime : 0, isTeacherTurn);
     };
 
-    function generateNewPattern() {
+   function generateNewPattern() {
         const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
         if (selected.length === 0) return;
-        currentRhythm = Array.from({length: beatsPerMeasure}, () => selected[Math.floor(Math.random() * selected.length)]);
+        
+        // Check if we are doing the "Classic" Nana/Boo loop (only if in 4/4)
+        if (beatsPerMeasure === 4 && selected.includes("Nana") && selected.includes("Boo") && selected.length === 2) {
+             currentRhythm = ["Nana", "Nana", "Boo", "Boo"];
+        } else {
+            // Otherwise, fill whatever measure length we have with random selected beats
+            currentRhythm = Array.from({length: beatsPerMeasure}, () => selected[Math.floor(Math.random() * selected.length)]);
+        }
     }
 
     function playTone(freq, time, vol = 0.2, dur = 0.1, isMetronome = false) { if(!audioCtx) return; const g = audioCtx.createGain(); g.connect(masterGain); g.gain.setValueAtTime(vol, time); g.gain.exponentialRampToValueAtTime(0.0001, time + dur); const osc = audioCtx.createOscillator(); if (isMetronome) { osc.frequency.setValueAtTime(freq, time); } else { if (soundType === 'classic') osc.type = 'square'; else if (soundType === 'bloop') osc.type = 'sine'; else osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, time); } osc.connect(g); osc.start(time); osc.stop(time + dur); }
