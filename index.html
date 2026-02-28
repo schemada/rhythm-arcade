@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,41 +30,150 @@
             display: flex; justify-content: center; align-items: center;
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg) 100%);
         }
-        #start-screen { position: fixed; width: 100%; height: 100%; top:0; left:0; background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px; }
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 1001; background-size: 100% 6px, 4px 100%; pointer-events: none;
+            animation: scanline 30s linear infinite;
+        }
+        @keyframes scanline { from { background-position: 0 0; } to { background-position: 0 100%; } }
+        #start-screen {
+            position: fixed; width: 100%; height: 100%; top:0; left:0;
+            background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
+            transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
+        }
         #start-screen.hidden { transform: translateY(-100%); }
+        .mascot-box {
+            font-family: monospace; font-size: 0.6vw; line-height: 1.1;
+            color: var(--banana-gold); white-space: pre; text-align: center;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+            margin-bottom: 30px; animation: mascotThump 0.5s ease-in-out infinite alternate;
+        }
+        @media (max-width: 600px) {
+            .mascot-box { font-size: 1.2vw; }
+            .main-title { font-size: 1.4rem !important; }
+            .press-start { font-size: 1.2rem !important; padding: 20px 40px !important; }
+        }
+        @keyframes mascotThump { 0% { transform: scale(1.1) translateY(0); } 100% { transform: scale(1.15) translateY(-10px); } }
         .title-group { text-align: center; margin-bottom: 40px; }
-        .main-title { font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; margin: 0; }
-        .press-start { font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px; background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer; box-shadow: 0 12px 0 #064d3b; transition: all 0.1s; }
-        .press-start:active { transform: translateY(4px); box-shadow: 0 8px 0 #064d3b; }
+        .main-title { 
+            font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arcade-red), 8px 8px 0px #000; 
+            margin: 0; animation: neonPulse 1.5s infinite alternate;
+        }
+        @keyframes neonPulse { 0% { text-shadow: 0 0 15px var(--arcade-red), 8px 8px 0px #000; } 100% { text-shadow: 0 0 35px var(--arcade-red), 8px 8px 0px #000; } }
+        .sub-title { font-size: 0.7rem; color: var(--primary); letter-spacing: 4px; margin-top: 15px; }
+        .press-start {
+            font-family: 'Press Start 2P'; font-size: 1.8rem; padding: 30px 60px;
+            background: #10ac84; color: #fff; border: 6px solid #fff; cursor: pointer;
+            box-shadow: 0 12px 0 #064d3b;
+        }
         #game-container { width: 95%; max-width: 1100px; display: none; flex-direction: column; align-items: center; padding: 20px 0 100px 0; }
         #game-container.visible { display: flex; }
-        #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
-        .beat-cell { background: #0a0a1a; border: 4px solid #1a1a30; height: 130px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.1s; }
-        .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); transform: scale(1.02); }
-        .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); transform: scale(1.02); }
+        #central-light { width: 100%; height: 15px; background: white; border-radius: 10px; margin-bottom: 20px; opacity: 0; }
+        .light-flash { animation: flashAnim 0.15s ease-out; }
+        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
         .picker-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .rhythm-card { background: var(--card-bg); border: 3px solid #333; padding: 8px; width: 80px; height: 105px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
+        .rhythm-card { 
+            background: var(--card-bg); border: 3px solid #333; padding: 8px; width: 80px; height: 105px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer;
+        }
         .rhythm-card.selected { border-color: var(--primary); background: #252545; box-shadow: 0 0 15px var(--primary); }
+        .rhythm-card svg { height: 45px; width: auto; }
         #adv-toggle { color: var(--primary); font-size: 10px; margin-bottom: 20px; cursor: pointer; }
+        #measure { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
+        .beat-cell { 
+            background: #0a0a1a; border: 4px solid #1a1a30; height: 130px; 
+            border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        @media (max-width: 600px) { .beat-cell { height: 100px; } .beat-cell svg { width: 40px; } }
+        .teacher-active .beat-cell.active { border-color: var(--teacher); box-shadow: 0 0 20px var(--teacher); }
+        .student-active .beat-cell.active { border-color: var(--student); box-shadow: 0 0 20px var(--student); }
         .controls { margin-top: 30px; width: 100%; background: #111125; padding: 20px; border-radius: 15px; text-align: center; border: 4px solid #333; }
-        #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
-        #toggle-btn:active { transform: translateY(3px); box-shadow: 0 3px #9a2b3e; }
-        .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; transition: all 0.2s; }
+        input[type=range] { -webkit-appearance: none; width: 100%; height: 12px; border-radius: 10px; margin: 15px 0; border: 3px solid #000; }
+        #tempo-slider { background: linear-gradient(to right, var(--easy) 0% 30%, var(--medium) 30% 60%, var(--hard) 60% 85%, var(--expert) 85% 100%); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 25px; height: 25px; background: #fff; border: 4px solid #000; cursor: pointer; }
+        .patch-btn { font-family: 'Press Start 2P'; font-size: 8px; padding: 8px; background: #111125; color: #888; border: 2px solid #444; border-radius: 4px; }
         .patch-btn.active { background: var(--primary); color: #fff; border-color: #fff; }
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #333; border-radius: 4px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--primary); cursor: pointer; margin-top: -8px; border: 3px solid #fff; }
+        #toggle-btn { font-family: 'Press Start 2P'; width: 100%; padding: 18px; background: var(--arcade-red); color: #fff; border: none; box-shadow: 0 6px #9a2b3e; cursor: pointer; font-size: 1.2rem; margin-top: 15px; }
+        .measure-wrapper { position: relative; width: 100%; }
+        #lock-btn { position: absolute; right: 0; top: -32px; cursor: pointer; background: #1a1a30; border: 2px solid #444; padding: 4px; border-radius: 4px; }
+        #lock-btn.locked { border-color: var(--arcade-red); }
+        #lock-btn svg { width: 16px; height: 16px; fill: #888; }
+        #lock-btn.locked svg { fill: var(--arcade-red); }
         
-        @media (max-width: 600px) { .main-title { font-size: 1.4rem !important; } .beat-cell { height: 100px; } }
+        /* NEW SUPPORT LINK STYLES */
+        .support-link {
+            margin-top: 30px;
+            font-size: 8px;
+            color: #ffffff;
+            opacity: 0.4;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease, color 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+        .support-link:hover {
+            opacity: 1;
+            color: var(--banana-gold);
+        }
+        /* --- DESKTOP UPSCALING (Only kicks in above 1024px) --- */
+@media (min-width: 1025px) {
+    /* 1. Make the ASCII Mascot readable */
+    .mascot-box { 
+        font-size: 8px !important; /* Fixed size works better than vw on desktop */
+        line-height: 1.2;
+        margin-bottom: 40px;
+    }
+
+    /* 2. Scale up the Title and Start Button */
+    .main-title { font-size: 4.5rem; }
+    .press-start { font-size: 2.5rem; padding: 40px 80px; }
+
+    /* 3. Scale the Rhythm Cards & Beat Cells */
+    .rhythm-card { 
+        width: 110px; 
+        height: 145px; 
+        padding: 12px;
+    }
+    .rhythm-card svg { height: 65px; }
+    
+    .beat-cell { 
+        height: 180px; 
+    }
+    .beat-cell svg { width: 80px; }
+
+    /* 4. Make the UI labels and buttons bigger */
+    #status-banner { font-size: 2rem; margin-bottom: 30px; }
+    .controls { padding: 40px; }
+    #toggle-btn { font-size: 2rem; padding: 30px; }
+    .patch-btn { font-size: 12px; padding: 12px; }
+    
+    /* 5. Scale the text inside the cells */
+    .beat-cell div { font-size: 12px !important; }
+}
+        /* This makes the labels slightly smaller when there are lots of boxes */
+.beat-cell div {
+    font-size: 0.5rem;
+    text-align: center;
+}
+        /* Keeps boxes from getting too tall or too squished */
+.beat-cell {
+    min-width: 0; /* Prevents overflow */
+    padding: 5px;
+}
+
+.beat-cell svg {
+    max-width: 80%; /* Scales the icons down automatically */
+    height: auto;
+}
     </style>
 </head>
 <body>
     <div id="start-screen">
-        <div class="title-group">
-            <h1 class="main-title">NANA NANA BOO BOO</h1>
-        </div>
-        <pre style="font-size: 10px; color: var(--banana-gold); line-height: 1.2;">
-                                                                                                                                  
+        <div class="mascot-box">
+                                                                                                                                
                                                                                                                               
                                                                                                                               
                                                                                                                               
@@ -113,183 +223,205 @@
                                                                                                                               
                                                                                                                               
                                                                                                                               
-                                                                                                                              
-
-</pre>
+                                                                                                                              </div>
+        <div class="title-group">
+            <h1 class="main-title">NANA NANA BOO BOO</h1>
+            <div class="sub-title">RHYTHM ARCADE</div>
+        </div>
         <button class="press-start" id="boot-btn">START GAME</button>
     </div>
-
     <div id="game-container">
+        <div id="central-light"></div>
         <div class="picker-container" id="picker-basic"></div>
         <div id="adv-toggle">[+] SHOW ADVANCED</div>
         
         <div id="time-sig-panel" style="display:none; text-align: center; margin-bottom: 15px;">
             <div style="font-size: 8px; color: var(--primary); margin-bottom: 10px;">TIME SIGNATURE:</div>
-            <select id="time-sig-select" style="background: #111125; color: #fff; border: 2px solid #444; font-family: 'Press Start 2P'; font-size: 10px; padding: 8px;">
-                <option value="1">1/4</option><option value="2">2/4</option><option value="3">3/4</option>
-                <option value="4" selected>4/4</option><option value="5">5/4</option><option value="6">6/4</option>
-                <option value="7">7/4</option><option value="8">8/4</option>
+            <select id="time-sig-select" style="background: #111125; color: #fff; border: 2px solid #444; font-family: 'Press Start 2P'; font-size: 10px; padding: 8px; cursor: pointer;">
+                <option value="1">1/4</option>
+                <option value="2">2/4</option>
+                <option value="3">3/4</option>
+                <option value="4" selected>4/4</option>
+                <option value="5">5/4</option>
+                <option value="6">6/4</option>
+                <option value="7">7/4</option>
+                <option value="8">8/4</option>
             </select>
         </div>
 
         <div class="picker-container" id="picker-adv" style="display:none; border-top: 2px dashed #444; padding-top: 20px; margin-bottom: 20px;"></div>
         <div id="status-banner" style="font-size:1rem; margin-bottom:15px; text-shadow: 2px 2px #000;">PICK BEATS</div>
-        <div id="measure"></div>
-
+        <div class="measure-wrapper">
+            <div id="lock-btn" title="Lock Pattern">
+                <svg id="lock-icon" viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/></svg>
+            </div>
+            <div id="measure"></div>
+        </div>
         <div class="controls">
-            <div style="font-size: 8px; letter-spacing: 1px;">SPEED: <span id="tempo-val">80 BPM</span></div>
-            <span id="rank-label" style="font-size: 10px; margin-top: 10px; display: block; color: var(--easy);">[EASY]</span>
-            <input type="range" id="tempo-slider" min="40" max="200" value="80" style="width:100%; margin: 15px 0;">
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-                <button class="patch-btn active" data-patch="classic">SYNTH</button>
-                <button class="patch-btn" data-patch="bloop">BLOOP</button>
+            <div style="font-size: 8px; letter-spacing: 1px;">SPEED: <span id="tempo-val">80 BPM</span> <span id="rank-label">[EASY]</span></div>
+            <input type="range" id="tempo-slider" min="40" max="200" value="80">
+            <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-top: 10px;">
+                <div style="width: 100%;">
+                    <div style="font-size: 8px; color: var(--primary); margin-bottom: 5px;">SOUND PATCH</div>
+                    <div style="display: flex; gap: 5px; justify-content: center;">
+                        <button class="patch-btn active" data-patch="classic">SYNTH</button>
+                        <button class="patch-btn" data-patch="bloop">BLOOP</button>
+                        <button class="patch-btn" data-patch="metallic">METAL</button>
+                    </div>
+                </div>
             </div>
             <button id="toggle-btn">START</button>
         </div>
+        
+        <a href="https://schemada.gumroad.com/l/zoyujc" target="_blank" rel="noopener noreferrer" class="support-link">
+            SUPPORT THE DEV / BUY A BANANA
+        </a>
     </div>
-
 <script>
-    let audioCtx, masterGain, isRunning = false, tempo = 80, beatsPerMeasure = 4, currentBeatIndex = 0, isTeacherTurn = true, currentRhythm = [], soundType = 'classic', nextNoteTime = 0;
-    const toggleBtn = document.getElementById('toggle-btn'), timeSigSelect = document.getElementById('time-sig-select');
+    let audioCtx, masterGain, compressor;
+    const light = document.getElementById('central-light'), toggleBtn = document.getElementById('toggle-btn'), slider = document.getElementById('tempo-slider'), patchBtns = document.querySelectorAll('.patch-btn'), lockBtn = document.getElementById('lock-btn'), lockIcon = document.getElementById('lock-icon');
+    let isRunning = false, tempo = 80, secondsPerBeat = 0.75, nextNoteTime = 0, currentBeatIndex = 0, isTeacherTurn = true, currentRhythm = [], soundType = 'classic', isLocked = false;
+    
+    // NEW: Time Signature State
+    let beatsPerMeasure = 4;
+    const timeSigSelect = document.getElementById('time-sig-select');
 
-    const RHYTHM_CONFIG = { 
-        Boo: { offsets: [0], name: "BOO" }, 
-        Nana: { offsets: [0, 0.5], name: "NANA" }, 
-        Gullible: { offsets: [0, 0.333, 0.666], name: "GULLIBLE" }, 
-        LiarLiar: { offsets: [0, 0.25, 0.5, 0.75], name: "LIAR LIAR" }, 
-        Rest: { offsets: [], name: "REST" },
-        Offbeat: { offsets: [0.5], name: "" },
-        Adv1: { offsets: [0, 0.5, 0.75], name: "" }
-    };
-
-    const SVGS = { 
-        Boo: `<svg viewBox="0 0 60 100" width="30"><ellipse cx="20" cy="80" rx="12" ry="8" fill="white" transform="rotate(-15, 20, 80)"/><rect x="29" y="20" width="4" height="62" fill="white"/></svg>`, 
-        Nana: `<svg viewBox="0 0 80 100" width="40"><ellipse cx="15" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 15, 80)"/><rect x="22" y="20" width="4" height="62" fill="white"/><ellipse cx="55" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 55, 80)"/><rect x="62" y="20" width="4" height="62" fill="white"/><rect x="22" y="20" width="44" height="10" fill="white"/></svg>`, 
-        Gullible: `<svg viewBox="0 0 100 100" width="45"><text x="50" y="16" fill="white" font-size="12" text-anchor="middle">3</text><ellipse cx="12" cy="80" rx="8" ry="6" fill="white"/><rect x="17" y="24" width="3" height="58" fill="white"/><ellipse cx="45" cy="80" rx="8" ry="6" fill="white"/><rect x="50" y="24" width="3" height="58" fill="white"/><ellipse cx="78" cy="80" rx="8" ry="6" fill="white"/><rect x="83" y="24" width="3" height="58" fill="white"/><rect x="17" y="24" width="69" height="8" fill="white"/></svg>`, 
-        LiarLiar: `<svg viewBox="0 0 100 100" width="45"><ellipse cx="10" cy="80" rx="7" ry="5" fill="white"/><rect x="15" y="20" width="3" height="62" fill="white"/><ellipse cx="35" cy="80" rx="7" ry="5" fill="white"/><rect x="40" y="20" width="3" height="62" fill="white"/><ellipse cx="60" cy="80" rx="7" ry="5" fill="white"/><rect x="65" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="15" y="20" width="78" height="7" fill="white"/><rect x="15" y="32" width="78" height="7" fill="white"/></svg>`, 
-        Rest: `<svg viewBox="0 0 60 100" width="20"><path d="M15 20 L45 20 L25 45 L45 55 L25 80" stroke="#444" stroke-width="10" fill="none" stroke-linecap="round"/></svg>`,
-        Offbeat: `<svg viewBox="0 0 80 100" width="30"><circle cx="20" cy="35" r="4" fill="white"/><ellipse cx="50" cy="80" rx="10" ry="7" fill="white"/><rect x="58" y="20" width="4" height="62" fill="white"/></svg>`,
-        Adv1: `<svg viewBox="0 0 100 100" width="40"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white"/><rect x="20" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/></svg>`
-    };
-
-    function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); masterGain = audioCtx.createGain(); masterGain.connect(audioCtx.destination); } if (audioCtx.state === 'suspended') audioCtx.resume(); }
-
-    Object.keys(RHYTHM_CONFIG).forEach(key => {
-        const card = document.createElement('div');
-        card.className = `rhythm-card ${['Boo','Nana'].includes(key)?'selected':''}`;
-        card.dataset.type = key;
-        card.innerHTML = SVGS[key] + `<div style="font-size:6px;">${RHYTHM_CONFIG[key].name}</div>`;
-        card.onclick = () => { card.classList.toggle('selected'); initAudio(); };
-        if (RHYTHM_CONFIG[key].name) document.getElementById('picker-basic').appendChild(card);
-        else document.getElementById('picker-adv').appendChild(card);
-    });
-
+    const RHYTHM_CONFIG = { Boo: { offsets: [0], name: "BOO" }, Nana: { offsets: [0, 0.5], name: "NANA" }, Gullible: { offsets: [0, 0.333, 0.666], name: "GUL-LI-BLE" }, LiarLiar: { offsets: [0, 0.25, 0.5, 0.75], name: "LIAR LIAR" }, Rest: { offsets: [], name: "REST" }, Offbeat: { offsets: [0.5], name: "" }, Adv1: { offsets: [0, 0.5, 0.75], name: "" }, Adv2: { offsets: [0, 0.25, 0.5], name: "" }, Adv3: { offsets: [0, 0.25, 0.75], name: "" }, Adv4: { offsets: [0, 0.75], name: "" }, Adv5: { offsets: [0.25, 0.5, 0.75], name: "" }, Adv6: { offsets: [0.5, 0.75], name: "" } };
+    const SVGS = { Boo: `<svg viewBox="0 0 60 100" width="35"><ellipse cx="20" cy="80" rx="12" ry="8" fill="white" transform="rotate(-15, 20, 80)"/><rect x="29" y="20" width="4" height="62" fill="white"/></svg>`, Nana: `<svg viewBox="0 0 80 100" width="45"><ellipse cx="15" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 15, 80)"/><rect x="22" y="20" width="4" height="62" fill="white"/><ellipse cx="55" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 55, 80)"/><rect x="62" y="20" width="4" height="62" fill="white"/><rect x="22" y="20" width="44" height="10" fill="white"/></svg>`, Gullible: `<svg viewBox="0 0 100 100" width="55"><text x="50" y="16" fill="white" font-size="16" font-family="'Press Start 2P'" text-anchor="middle">3</text><ellipse cx="12" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 12, 80)"/><rect x="17" y="24" width="3" height="58" fill="white"/><ellipse cx="45" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 45, 80)"/><rect x="50" y="24" width="3" height="58" fill="white"/><ellipse cx="78" cy="80" rx="8" ry="6" fill="white" transform="rotate(-15, 78, 80)"/><rect x="83" y="24" width="3" height="58" fill="white"/><rect x="17" y="24" width="69" height="8" fill="white"/></svg>`, LiarLiar: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="10" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 10, 80)"/><rect x="15" y="20" width="3" height="62" fill="white"/><ellipse cx="35" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 35, 80)"/><rect x="40" y="20" width="3" height="62" fill="white"/><ellipse cx="60" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 60, 80)"/><rect x="65" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="15" y="20" width="78" height="7" fill="white"/><rect x="15" y="32" width="78" height="7" fill="white"/></svg>`, Rest: `<svg viewBox="0 0 60 100" width="25"><path d="M15 20 L45 20 L25 45 L45 55 L25 80" stroke="#444" stroke-width="10" fill="none" stroke-linecap="round"/></svg>`, Offbeat: `<svg viewBox="0 0 80 100" width="35"><path d="M20,35 Q30,28 30,40 L15,75" stroke="white" stroke-width="4" fill="none"/><circle cx="20" cy="35" r="4" fill="white"/><ellipse cx="50" cy="80" rx="10" ry="7" fill="white" transform="rotate(-15, 50, 80)"/><rect x="58" y="20" width="4" height="62" fill="white"/><path d="M58,20 Q80,35 58,50" fill="white"/></svg>`, Adv1: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="55" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 55, 80)"/><rect x="60" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="60" y="32" width="33" height="7" fill="white"/></svg>`, Adv2: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="45" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 45, 80)"/><rect x="50" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="20" y="32" width="33" height="7" fill="white"/></svg>`, Adv3: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="15" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 15, 80)"/><rect x="20" y="20" width="3" height="62" fill="white"/><ellipse cx="50" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 50, 80)"/><rect x="55" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="20" y="20" width="73" height="7" fill="white"/><rect x="20" y="32" width="12" height="7" fill="white"/><rect x="78" y="32" width="15" height="7" fill="white"/></svg>`, Adv4: `<svg viewBox="0 0 100 100" width="55"><ellipse cx="25" cy="80" rx="9" ry="6" fill="white" transform="rotate(-15, 25, 80)"/><rect x="32" y="20" width="4" height="62" fill="white"/><circle cx="48" cy="75" r="4" fill="white"/><ellipse cx="75" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 75, 80)"/><rect x="80" y="20" width="3" height="62" fill="white"/><rect x="32" y="20" width="51" height="8" fill="white"/><rect x="68" y="32" width="15" height="7" fill="white"/></svg>`, Adv5: `<svg viewBox="0 0 100 100" width="55"><path d="M 15,30 Q 23,25 23,35 L 15,55" stroke="white" stroke-width="2.5" fill="none"/><circle cx="15" cy="30" r="3" fill="white"/><path d="M 10,45 Q 18,40 18,50 L 5,75" stroke="white" stroke-width="2.5" fill="none"/><circle cx="10" cy="45" r="3" fill="white"/><ellipse cx="35" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 35, 80)"/><rect x="40" y="20" width="3" height="62" fill="white"/><ellipse cx="60" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 60, 80)"/><rect x="65" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="40" y="20" width="53" height="7" fill="white"/><rect x="40" y="32" width="53" height="7" fill="white"/></svg>`, Adv6: `<svg viewBox="0 0 100 100" width="55"><path d="M 20,35 Q 30,28 30,40 L 15,75" stroke="white" stroke-width="3" fill="none"/><circle cx="20" cy="35" r="3.5" fill="white"/><ellipse cx="55" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 55, 80)"/><rect x="60" y="20" width="3" height="62" fill="white"/><ellipse cx="85" cy="80" rx="7" ry="5" fill="white" transform="rotate(-15, 85, 80)"/><rect x="90" y="20" width="3" height="62" fill="white"/><rect x="60" y="20" width="33" height="7" fill="white"/><rect x="60" y="32" width="33" height="7" fill="white"/></svg>` };
+    function initAudio() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); compressor = audioCtx.createDynamicsCompressor(); masterGain = audioCtx.createGain(); masterGain.connect(compressor); compressor.connect(audioCtx.destination); masterGain.gain.value = 1.2; } if (audioCtx.state === 'suspended') audioCtx.resume(); }
+    patchBtns.forEach(btn => { btn.onclick = () => { patchBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); soundType = btn.dataset.patch; initAudio(); }; });
+    lockBtn.onclick = () => { isLocked = !isLocked; lockBtn.classList.toggle('locked', isLocked); lockIcon.innerHTML = isLocked ? `<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>` : `<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>`; initAudio(); };
+    Object.keys(RHYTHM_CONFIG).forEach(key => { const card = document.createElement('div'); const isDefault = (key === 'Boo' || key === 'Nana'); card.className = `rhythm-card ${isDefault ? 'selected' : ''}`; card.dataset.type = key; const label = RHYTHM_CONFIG[key].name ? `<div style="font-size:6px;">${RHYTHM_CONFIG[key].name}</div>` : ''; card.innerHTML = SVGS[key] + label; card.onclick = () => { card.classList.toggle('selected'); initAudio(); }; if (RHYTHM_CONFIG[key].name && key !== 'Offbeat') { document.getElementById('picker-basic').appendChild(card); } else { document.getElementById('picker-adv').appendChild(card); } });
+    
+    // UPDATED: Advanced Panel Toggle
     document.getElementById('adv-toggle').onclick = function() { 
-        const p = document.getElementById('picker-adv'), s = document.getElementById('time-sig-panel');
-        const show = p.style.display === 'none';
-        p.style.display = show ? 'flex' : 'none'; s.style.display = show ? 'block' : 'none';
-        this.innerText = show ? '[-] HIDE ADVANCED' : '[+] SHOW ADVANCED';
+        const panel = document.getElementById('picker-adv'); 
+        const sigPanel = document.getElementById('time-sig-panel');
+        const isHidden = panel.style.display === 'none';
+        panel.style.display = isHidden ? 'flex' : 'none'; 
+        sigPanel.style.display = isHidden ? 'block' : 'none';
+        this.innerText = isHidden ? '[-] HIDE ADVANCED' : '[+] SHOW ADVANCED'; 
     };
 
-    timeSigSelect.onchange = (e) => {
+  timeSigSelect.onchange = (e) => {
         beatsPerMeasure = parseInt(e.target.value);
-        document.getElementById('measure').style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
-        if (currentBeatIndex >= beatsPerMeasure) currentBeatIndex = 0;
-        generateNewPattern();
+        
+        // Update the visual grid columns instantly
+        const measureEl = document.getElementById('measure');
+        measureEl.style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
+        
+        // If we were on a high beat (like 7) and moved to 1/4, reset to 0
+        if (currentBeatIndex >= beatsPerMeasure) {
+            currentBeatIndex = 0;
+        }
+
+        generateNewPattern(); 
+        // Refresh the UI right now so the old boxes disappear
         updateUI(currentBeatIndex, audioCtx ? audioCtx.currentTime : 0, isTeacherTurn);
     };
-
-    function generateNewPattern() {
-        const sel = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
-        if (sel.length === 0) return;
-        if (beatsPerMeasure === 4 && sel.includes("Nana") && sel.includes("Boo") && sel.length === 2) {
-            currentRhythm = ["Nana", "Nana", "Boo", "Boo"];
+   function generateNewPattern() {
+        const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
+        if (selected.length === 0) return;
+        
+        // Check if we are doing the "Classic" Nana/Boo loop (only if in 4/4)
+        if (beatsPerMeasure === 4 && selected.includes("Nana") && selected.includes("Boo") && selected.length === 2) {
+             currentRhythm = ["Nana", "Nana", "Boo", "Boo"];
         } else {
-            currentRhythm = Array.from({length: beatsPerMeasure}, () => sel[Math.floor(Math.random() * sel.length)]);
+            // Otherwise, fill whatever measure length we have with random selected beats
+            currentRhythm = Array.from({length: beatsPerMeasure}, () => selected[Math.floor(Math.random() * selected.length)]);
         }
     }
 
-    function updateUI(idx, time, teacher) {
-        const delay = Math.max(0, (time - audioCtx.currentTime) * 1000);
-        setTimeout(() => {
-            if (!isRunning) return;
-            if (idx >= beatsPerMeasure) return; // Fix stacking bug
-            const m = document.getElementById('measure');
-            if ((idx === 0 && teacher) || m.children.length !== beatsPerMeasure) {
-                m.innerHTML = '';
-                currentRhythm.forEach(key => {
-                    const c = document.createElement('div'); c.className = 'beat-cell';
-                    c.innerHTML = SVGS[key]; m.appendChild(c);
-                });
-            }
-            document.getElementById('status-banner').innerText = teacher ? "WATCH!" : "CLAP!";
-            document.getElementById('status-banner').style.color = teacher ? "var(--teacher)" : "var(--student)";
-            document.getElementById('measure').className = teacher ? "teacher-active" : "student-active";
-            const cells = document.querySelectorAll('.beat-cell');
-            cells.forEach((c, i) => c.classList.toggle('active', i === idx));
-        }, delay);
-    }
-
-    function playTone(freq, time, vol=0.2, dur=0.1) {
-        const g = audioCtx.createGain(); g.connect(masterGain);
-        g.gain.setValueAtTime(vol, time); g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-        const osc = audioCtx.createOscillator(); osc.type = soundType==='classic'?'square':'sine';
-        osc.frequency.setValueAtTime(freq, time); osc.connect(g); osc.start(time); osc.stop(time + dur);
-    }
-
+    function playTone(freq, time, vol = 0.2, dur = 0.1, isMetronome = false) { if(!audioCtx) return; const g = audioCtx.createGain(); g.connect(masterGain); g.gain.setValueAtTime(vol, time); g.gain.exponentialRampToValueAtTime(0.0001, time + dur); const osc = audioCtx.createOscillator(); if (isMetronome) { osc.frequency.setValueAtTime(freq, time); } else { if (soundType === 'classic') osc.type = 'square'; else if (soundType === 'bloop') osc.type = 'sine'; else osc.type = 'sawtooth'; osc.frequency.setValueAtTime(freq, time); } osc.connect(g); osc.start(time); osc.stop(time + dur); }
+    
     function schedule() {
-        const secondsPerBeat = 60 / tempo;
         while (isRunning && nextNoteTime < audioCtx.currentTime + 0.1) {
+            playTone(currentBeatIndex === 0 ? 300 : 150, nextNoteTime, 0.05, 0.05, true);
             if (isTeacherTurn) {
                 const type = currentRhythm[currentBeatIndex];
-                RHYTHM_CONFIG[type].offsets.forEach(o => {
-                    playTone(600, nextNoteTime + (o * secondsPerBeat));
+                const offsets = RHYTHM_CONFIG[type].offsets;
+                offsets.forEach(offset => {
+                    const hitTime = nextNoteTime + (offset * secondsPerBeat);
+                    playTone(600, hitTime, 0.2, 0.1, false);
+                    triggerLight(hitTime);
                 });
             }
             updateUI(currentBeatIndex, nextNoteTime, isTeacherTurn);
             nextNoteTime += secondsPerBeat;
             currentBeatIndex++;
-            if (currentBeatIndex >= beatsPerMeasure) { 
-                currentBeatIndex = 0; 
-                isTeacherTurn = !isTeacherTurn; 
-                if (isTeacherTurn) generateNewPattern(); 
+            
+            // UPDATED: Logic uses beatsPerMeasure instead of hardcoded 3
+            if (currentBeatIndex >= beatsPerMeasure) {
+                currentBeatIndex = 0; isTeacherTurn = !isTeacherTurn;
+                if (isTeacherTurn && !isLocked) { 
+                    generateNewPattern();
+                }
             }
         }
         if (isRunning) requestAnimationFrame(schedule);
     }
+    function triggerLight(time) {
+        const delay = (time - audioCtx.currentTime) * 1000;
+        setTimeout(() => {
+            if (!isRunning) return;
+            light.classList.remove('light-flash');
+            void light.offsetWidth;
+            light.classList.add('light-flash');
+            light.style.backgroundColor = 'var(--teacher)';
+        }, delay);
+    }
+function updateUI(idx, time, teacher) {
+        const delay = (time - audioCtx.currentTime) * 1000;
+        setTimeout(() => {
+            if (!isRunning) return;
 
-    document.getElementById('tempo-slider').oninput = (e) => { 
-        tempo = e.target.value; 
-        document.getElementById('tempo-val').innerText = tempo + " BPM";
-        let rk = tempo < 90 ? {t:"[EASY]", c:"--easy"} : tempo < 140 ? {t:"[MED]", c:"--medium"} : tempo < 180 ? {t:"[HARD]", c:"--hard"} : {t:"[EXPERT]", c:"--expert"};
-        document.getElementById('rank-label').innerText = rk.t;
-        document.getElementById('rank-label').style.color = `var(${rk.c})`;
-    };
-    
-    document.querySelectorAll('.patch-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.patch-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            soundType = btn.dataset.patch;
-        };
-    });
+            // BUG FIX: Ignore "ghost" beats from the previous time signature
+            if (idx >= beatsPerMeasure) return;
 
-    document.getElementById('boot-btn').onclick = () => { initAudio(); generateNewPattern(); document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
-    
-    toggleBtn.onclick = () => { 
+            const m = document.getElementById('measure');
+            
+            // Redraw the grid if it's a new turn OR if the screen count is wrong
+            if ((idx === 0 && teacher) || m.children.length !== beatsPerMeasure) {
+                m.innerHTML = '';
+                currentRhythm.forEach(key => {
+                    const c = document.createElement('div'); 
+                    c.className = 'beat-cell';
+                    const label = RHYTHM_CONFIG[key].name ? `<div style="font-size:7px; margin-top:5px;">${RHYTHM_CONFIG[key].name}</div>` : '';
+                    c.innerHTML = SVGS[key] + label;
+                    m.appendChild(c);
+                });
+            }
+            
+            document.getElementById('status-banner').innerText = teacher ? "WATCH!" : "CLAP!";
+            document.getElementById('status-banner').style.color = teacher ? "var(--teacher)" : "var(--student)";
+            document.getElementById('measure').className = teacher ? "teacher-active" : "student-active";
+            
+            const cells = document.querySelectorAll('.beat-cell');
+            cells.forEach(c => c.classList.remove('active'));
+            if (cells[idx]) cells[idx].classList.add('active');
+        }, delay);
+    }
+    slider.oninput = (e) => { tempo = e.target.value; secondsPerBeat = 60/tempo; document.getElementById('tempo-val').innerText = tempo + " BPM"; let rk = tempo < 90 ? {t:"[EASY]", c:"--easy"} : tempo < 140 ? {t:"[MED]", c:"--medium"} : tempo < 180 ? {t:"[HARD]", c:"--hard"} : {t:"[EXPERT]", c:"--expert"}; document.getElementById('rank-label').innerText = rk.t; document.getElementById('rank-label').style.color = `var(${rk.c})`; };
+    const bootAction = () => { initAudio(); generateNewPattern(); updateUI(0, 0, true); document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
+    document.getElementById('boot-btn').onclick = bootAction;
+    toggleBtn.onclick = () => {
         initAudio();
-        if (!isRunning) { 
-            isRunning = true; 
-            currentBeatIndex = 0; 
-            isTeacherTurn = true;
-            nextNoteTime = audioCtx.currentTime + 0.1; 
-            toggleBtn.innerText = "STOP"; 
-            schedule(); 
-        } else { 
-            isRunning = false; 
-            toggleBtn.innerText = "START"; 
-        } 
+        if (!isRunning) {
+            const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
+            if (selected.length === 0) return;
+            generateNewPattern();
+            isRunning = true; currentBeatIndex = 0; isTeacherTurn = true; nextNoteTime = audioCtx.currentTime + 0.1; toggleBtn.innerText = "STOP"; schedule();
+        } else { isRunning = false; toggleBtn.innerText = "START"; }
     };
+    document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume().then(() => {
+                console.log("Game audio resumed successfully!");
+            });
+        }
+    }
+});
 </script>
 </body>
 </html>
