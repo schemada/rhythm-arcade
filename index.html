@@ -42,12 +42,7 @@
             background: inherit; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;
             transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); padding: 20px;
         }
-       #start-screen.hidden { 
-    transform: translateY(-100%); 
-    opacity: 0; 
-    pointer-events: none; 
-    visibility: hidden;
-}
+        #start-screen.hidden { transform: translateY(-100%); }
         .mascot-box {
             font-family: monospace; font-size: 0.6vw; line-height: 1.1;
             color: var(--banana-gold); white-space: pre; text-align: center;
@@ -172,22 +167,6 @@
     max-width: 80%; /* Scales the icons down automatically */
     height: auto;
 }
-        /* THE ONLY FIX: Prevent Start Screen overlap on Landscape iPhone */
-        @media (orientation: landscape) and (max-height: 500px) {
-            #start-screen { 
-                flex-direction: row !important; 
-                justify-content: center !important; 
-                gap: 5vw !important; 
-                padding: 10px !important;
-            }
-            .mascot-box { 
-                font-size: 0.5vh !important; /* Forces the banana to scale to the height */
-                margin: 0 !important; 
-            }
-            .title-group { margin-bottom: 0 !important; }
-            .main-title { font-size: 1.2rem !important; }
-            .press-start { font-size: 1rem !important; padding: 15px 30px !important; margin: 0 !important; }
-        }
     </style>
 </head>
 <body>
@@ -422,14 +401,7 @@ function updateUI(idx, time, teacher) {
         }, delay);
     }
     slider.oninput = (e) => { tempo = e.target.value; secondsPerBeat = 60/tempo; document.getElementById('tempo-val').innerText = tempo + " BPM"; let rk = tempo < 90 ? {t:"[EASY]", c:"--easy"} : tempo < 140 ? {t:"[MED]", c:"--medium"} : tempo < 180 ? {t:"[HARD]", c:"--hard"} : {t:"[EXPERT]", c:"--expert"}; document.getElementById('rank-label').innerText = rk.t; document.getElementById('rank-label').style.color = `var(${rk.c})`; };
-    const bootAction = () => { 
-    initAudio(); 
-    generateNewPattern(); 
-    // We only use your original class logic here
-    document.getElementById('start-screen').classList.add('hidden'); 
-    document.getElementById('game-container').classList.add('visible'); 
-    updateUI(0, 0, true);
-};
+    const bootAction = () => { initAudio(); generateNewPattern(); updateUI(0, 0, true); document.getElementById('start-screen').classList.add('hidden'); document.getElementById('game-container').classList.add('visible'); };
     document.getElementById('boot-btn').onclick = bootAction;
     toggleBtn.onclick = () => {
         initAudio();
