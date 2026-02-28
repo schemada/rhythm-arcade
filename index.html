@@ -302,27 +302,22 @@
         this.innerText = isHidden ? '[-] HIDE ADVANCED' : '[+] SHOW ADVANCED'; 
     };
 
-   timeSigSelect.onchange = (e) => {
+  timeSigSelect.onchange = (e) => {
         beatsPerMeasure = parseInt(e.target.value);
         
-        // 1. Instantly update the visual grid
+        // Update the visual grid columns instantly
         const measureEl = document.getElementById('measure');
         measureEl.style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
         
-        // 2. Immediate Pattern Check: 
-        // If we switched to a signature smaller than our current beat, 
-        // reset to beat 0 to avoid "ghost" boxes.
+        // If we were on a high beat (like 7) and moved to 1/4, reset to 0
         if (currentBeatIndex >= beatsPerMeasure) {
             currentBeatIndex = 0;
         }
 
-        // 3. Hot-swap the rhythm pattern so it fills the new measure length
         generateNewPattern(); 
-
-        // 4. Force a UI refresh so the user sees the new boxes right now
+        // Refresh the UI right now so the old boxes disappear
         updateUI(currentBeatIndex, audioCtx ? audioCtx.currentTime : 0, isTeacherTurn);
     };
-
    function generateNewPattern() {
         const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
         if (selected.length === 0) return;
@@ -374,22 +369,32 @@
             light.style.backgroundColor = 'var(--teacher)';
         }, delay);
     }
-    function updateUI(idx, time, teacher) {
+function updateUI(idx, time, teacher) {
         const delay = (time - audioCtx.currentTime) * 1000;
         setTimeout(() => {
-            if (!isRunning && idx !== 0) return;
-            if (idx === 0 && teacher) {
-                const m = document.getElementById('measure'); m.innerHTML = '';
+            if (!isRunning) return;
+
+            // BUG FIX: Ignore "ghost" beats from the previous time signature
+            if (idx >= beatsPerMeasure) return;
+
+            const m = document.getElementById('measure');
+            
+            // Redraw the grid if it's a new turn OR if the screen count is wrong
+            if ((idx === 0 && teacher) || m.children.length !== beatsPerMeasure) {
+                m.innerHTML = '';
                 currentRhythm.forEach(key => {
-                    const c = document.createElement('div'); c.className = 'beat-cell';
+                    const c = document.createElement('div'); 
+                    c.className = 'beat-cell';
                     const label = RHYTHM_CONFIG[key].name ? `<div style="font-size:7px; margin-top:5px;">${RHYTHM_CONFIG[key].name}</div>` : '';
                     c.innerHTML = SVGS[key] + label;
                     m.appendChild(c);
                 });
             }
+            
             document.getElementById('status-banner').innerText = teacher ? "WATCH!" : "CLAP!";
             document.getElementById('status-banner').style.color = teacher ? "var(--teacher)" : "var(--student)";
             document.getElementById('measure').className = teacher ? "teacher-active" : "student-active";
+            
             const cells = document.querySelectorAll('.beat-cell');
             cells.forEach(c => c.classList.remove('active'));
             if (cells[idx]) cells[idx].classList.add('active');
