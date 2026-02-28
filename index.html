@@ -157,6 +157,16 @@
     font-size: 0.5rem;
     text-align: center;
 }
+        /* Keeps boxes from getting too tall or too squished */
+.beat-cell {
+    min-width: 0; /* Prevents overflow */
+    padding: 5px;
+}
+
+.beat-cell svg {
+    max-width: 80%; /* Scales the icons down automatically */
+    height: auto;
+}
     </style>
 </head>
 <body>
@@ -293,13 +303,25 @@
     };
 
     // NEW: Time Signature Selection Logic
+   // BULLETPROOF: Time Signature Selection Logic
     timeSigSelect.onchange = (e) => {
+        // 1. Immediately stop the loop to prevent "breaking"
+        isRunning = false;
+        toggleBtn.innerText = "START";
+        
+        // 2. Update the math
         beatsPerMeasure = parseInt(e.target.value);
+        currentBeatIndex = 0;
+        isTeacherTurn = true;
+        
+        // 3. Update the Grid layout
         document.getElementById('measure').style.gridTemplateColumns = `repeat(${beatsPerMeasure}, 1fr)`;
-        if (!isRunning) {
-            generateNewPattern(); 
-            updateUI(0, audioCtx ? audioCtx.currentTime : 0, true);
-        }
+        
+        // 4. Force a fresh UI and pattern update
+        generateNewPattern(); 
+        updateUI(0, audioCtx ? audioCtx.currentTime : 0, true);
+        
+        console.log("Time Signature Reset to: " + beatsPerMeasure + "/4");
     };
 
     function generateNewPattern() {
