@@ -1,6 +1,6 @@
 {
-  "short_name": "Boo Boo",
-  "name": "Nana Nana Boo Boo Rhythm Arcade",
+  "short_name": "NANA NANA",
+  "name": "NANA NANA BOO BOO Rhythm Arcade",
   "icons": [
     {
       "src": "your-icon-name.png",
@@ -18,4 +18,5 @@
   "theme_color": "#e94560",
   "display": "standalone",
   "orientation": "portrait"
+
 }
