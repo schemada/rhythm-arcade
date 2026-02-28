@@ -110,6 +110,41 @@
             opacity: 1;
             color: var(--banana-gold);
         }
+        /* --- DESKTOP UPSCALING (Only kicks in above 1024px) --- */
+@media (min-width: 1025px) {
+    /* 1. Make the ASCII Mascot readable */
+    .mascot-box { 
+        font-size: 8px !important; /* Fixed size works better than vw on desktop */
+        line-height: 1.2;
+        margin-bottom: 40px;
+    }
+
+    /* 2. Scale up the Title and Start Button */
+    .main-title { font-size: 4.5rem; }
+    .press-start { font-size: 2.5rem; padding: 40px 80px; }
+
+    /* 3. Scale the Rhythm Cards & Beat Cells */
+    .rhythm-card { 
+        width: 110px; 
+        height: 145px; 
+        padding: 12px;
+    }
+    .rhythm-card svg { height: 65px; }
+    
+    .beat-cell { 
+        height: 180px; 
+    }
+    .beat-cell svg { width: 80px; }
+
+    /* 4. Make the UI labels and buttons bigger */
+    #status-banner { font-size: 2rem; margin-bottom: 30px; }
+    .controls { padding: 40px; }
+    #toggle-btn { font-size: 2rem; padding: 30px; }
+    .patch-btn { font-size: 12px; padding: 12px; }
+    
+    /* 5. Scale the text inside the cells */
+    .beat-cell div { font-size: 12px !important; }
+}
     </style>
 </head>
 <body>
