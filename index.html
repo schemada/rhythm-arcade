@@ -326,12 +326,12 @@
         const selected = Array.from(document.querySelectorAll('.rhythm-card.selected')).map(c => c.dataset.type);
         if (selected.length === 0) return;
         
-        // Check if we are doing the "Classic" Nana/Boo loop (ONLY for the first round)
+        // Check if we are doing the "Classic" Nana/Boo loop
         if (isFirstBoot && beatsPerMeasure === 4 && selected.includes("Nana") && selected.includes("Boo") && selected.length === 2) {
              currentRhythm = ["Nana", "Nana", "Boo", "Boo"];
-             isFirstBoot = false; // Turn the switch off so it randomizes next time
+             // (We removed the switch off from here)
         } else {
-            // Otherwise, fill whatever measure length we have with random selected beats
+            // Fill whatever measure length we have with random selected beats
             currentRhythm = Array.from({length: beatsPerMeasure}, () => selected[Math.floor(Math.random() * selected.length)]);
         }
     }
@@ -358,6 +358,7 @@
             if (currentBeatIndex >= beatsPerMeasure) {
                 currentBeatIndex = 0; isTeacherTurn = !isTeacherTurn;
                 if (isTeacherTurn && !isLocked) { 
+                    isFirstBoot = false;
                     generateNewPattern();
                 }
             }
